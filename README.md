@@ -46,7 +46,7 @@ Làm theo các bước dưới đây để thiết lập và chạy dự án tr�
 3. Khởi động server phát triển:
 
    ```bash
-   npm start
+   npm run dev
    ```
 
 4. Mở trình duyệt và truy cập:
