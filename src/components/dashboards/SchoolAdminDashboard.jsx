@@ -65,7 +65,7 @@ export default function SchoolAdminDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-[#1E3A8A]">
           Quản trị trường học
         </h1>
         <p className="text-gray-600 mt-1">

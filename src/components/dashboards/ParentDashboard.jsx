@@ -9,14 +9,9 @@ import {
   Bell,
 } from "lucide-react";
 
-const ChildCard = ({ name, grade, class: className, avatar, overallScore }) => (
+const ChildCard = ({ name, grade, class: className, overallScore }) => (
   <div className="bg-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
     <div className="flex items-center space-x-3 mb-3">
-      <img
-        src={avatar || "/placeholder.svg"}
-        alt={name}
-        className="h-10 w-10 rounded-full"
-      />
       <div>
         <h3 className="font-semibold text-gray-900">{name}</h3>
         <p className="text-sm text-gray-600">
@@ -164,7 +159,7 @@ export default function ParentDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-[#1E3A8A]">
           Dashboard Phụ huynh
         </h1>
         <p className="text-gray-600 mt-1">

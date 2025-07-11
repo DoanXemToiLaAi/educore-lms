@@ -65,135 +65,188 @@ export default function SystemAdminDashboard() {
   ];
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Quản trị hệ thống</h1>
-        <p className="text-gray-600 mt-1">
-          Tổng quan và quản lý toàn hệ thống EduCore
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard
-          icon={School}
-          title="Tổng số Tenant"
-          value="24"
-          change={{ value: 8.2, positive: true }}
-          color="bg-blue-500"
-        />
-        <StatCard
-          icon={Users}
-          title="Tổng người dùng"
-          value="45,231"
-          change={{ value: 12.5, positive: true }}
-          color="bg-green-500"
-        />
-        <StatCard
-          icon={Server}
-          title="Uptime hệ thống"
-          value="99.9%"
-          color="bg-purple-500"
-        />
-        <StatCard
-          icon={Activity}
-          title="Requests/giây"
-          value="1,247"
-          change={{ value: 3.1, positive: false }}
-          color="bg-orange-500"
-        />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-            <div className="p-6 border-b border-gray-100">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900">
-                  Quản lý Tenant
-                </h2>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
-                  Thêm Tenant
-                </button>
-              </div>
-            </div>
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {mockTenants.map((tenant, index) => (
-                  <TenantCard key={index} {...tenant} />
-                ))}
-              </div>
-            </div>
-          </div>
+    <>
+      <div className="header">
+        <div className="left">
+          <h1>Tổng quan</h1>
+          <ul className="breadcrumb">
+            <li>
+              <a href="#">Tổng quan</a>
+            </li>
+          </ul>
         </div>
+        <a href="#" className="report">
+          <i className="bx bx-cloud-download"></i>
+          <span>Tải báo cáo CVS</span>
+        </a>
+      </div>
 
-        <div className="space-y-6">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-            <div className="p-6 border-b border-gray-100">
-              <h2 className="text-lg font-semibold text-gray-900">
-                Tình trạng hệ thống
-              </h2>
-            </div>
-            <div className="p-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Database</span>
-                <span className="flex items-center text-green-600">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                  Hoạt động
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">API Server</span>
-                <span className="flex items-center text-green-600">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                  Hoạt động
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">File Storage</span>
-                <span className="flex items-center text-yellow-600">
-                  <div className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></div>
-                  Cảnh báo
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">CDN</span>
-                <span className="flex items-center text-green-600">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                  Hoạt động
-                </span>
-              </div>
+      {/* Insights as Charts */}
+      <div className="insights-charts three-charts">
+        <div className="chart-card tenant-active-card">
+          <div className="tenant-active-info">
+            <i className="bx bx-buildings"></i>
+            <div>
+              <h3>1.450 Trường học</h3>
+              <p>Số lượng Tenant hoạt động</p>
             </div>
           </div>
-
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-            <div className="p-6 border-b border-gray-100">
-              <h2 className="text-lg font-semibold text-gray-900">
-                Cảnh báo gần đây
-              </h2>
-            </div>
-            <div className="p-6 space-y-3">
-              <div className="flex items-start space-x-3">
-                <AlertTriangle className="h-4 w-4 text-yellow-500 mt-0.5" />
-                <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    Dung lượng storage cao
-                  </p>
-                  <p className="text-xs text-gray-500">2 phút trước</p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-3">
-                <TrendingUp className="h-4 w-4 text-blue-500 mt-0.5" />
-                <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    Tăng trưởng người dùng
-                  </p>
-                  <p className="text-xs text-gray-500">1 giờ trước</p>
-                </div>
-              </div>
+          <canvas id="tenantActivePieChart"></canvas>
+        </div>
+        <div className="chart-card uptime-card">
+          <div className="tenant-active-info">
+            <i className="bx bx-time-five"></i>
+            <div>
+              <h3>99.9% Uptime</h3>
+              <p>Tỷ lệ hoạt động của hệ thống</p>
             </div>
           </div>
+          <canvas id="uptimeLineChart"></canvas>
+        </div>
+        <div className="chart-card user-active-card">
+          <div className="tenant-active-info">
+            <i className="bx bx-group"></i>
+            <div>
+              <h3>50.000 Người dùng</h3>
+              <p>Tổng số người dùng đang hoạt động</p>
+            </div>
+          </div>
+          <canvas id="activeUserBarChart"></canvas>
         </div>
       </div>
-    </div>
+      {/* End of Insights as Charts */}
+
+      <div className="bottom-data">
+        <div className="orders">
+          <div className="header">
+            <i className="bx bx-history"></i>
+            <h3>Hoạt động hệ thống gần đây</h3>
+            <i className="bx bx-filter"></i>
+            <i className="bx bx-search"></i>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Người dùng</th>
+                <th>Hành động</th>
+                <th>Ngày/Giờ</th>
+                <th>Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <img src={require("../../assets/images/avatar.jpg")} alt="User avatar" />
+                  <p>admin1@educore.com</p>
+                </td>
+                <td>Tạo Tenant (Trường XYZ)</td>
+                <td>06-07-2025 08:00</td>
+                <td>
+                  <span className="status completed">Thành công</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <img src={require("../../assets/images/avatar.jpg")} alt="User avatar" />
+                  <p>admin2@educore.com</p>
+                </td>
+                <td>Gán vai trò (Giáo viên)</td>
+                <td>06-07-2025 07:45</td>
+                <td>
+                  <span className="status completed">Thành công</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <img src={require("../../assets/images/avatar.jpg")} alt="User avatar" />
+                  <p>system@educore.com</p>
+                </td>
+                <td>Khởi tạo sao lưu</td>
+                <td>06-07-2025 07:30</td>
+                <td>
+                  <span className="status process">Đang xử lý</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+<img src={require("../../assets/images/avatar.jpg")} alt="User avatar" />                  <p>admin3@educore.com</p>
+                </td>
+                <td>Xóa Tenant (Trường ABC)</td>
+                <td>05-07-2025 18:20</td>
+                <td>
+                  <span className="status completed">Thành công</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <img src={require("../../assets/images/avatar.jpg")} alt="User avatar" />
+                  <p>admin4@educore.com</p>
+                </td>
+                <td>Đăng nhập</td>
+                <td>05-07-2025 17:55</td>
+                <td>
+                  <span className="status pending">Thất bại</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* Reminders */}
+        <div className="reminders">
+          <div className="header">
+            <i className="bx bx-support"></i>
+            <h3>Vé hỗ trợ đang chờ</h3>
+            <i className="bx bx-filter"></i>
+            <i className="bx bx-plus"></i>
+          </div>
+          <div className="ticket-table-wrapper">
+            <div className="ticket-labels">
+              <span className="ticket-label ticket-label-id">Mã vé</span>
+              <span className="ticket-label ticket-label-desc">Tên</span>
+              <span className="ticket-label ticket-label-sender">Người gửi</span>
+              <span className="ticket-label ticket-label-priority">Ưu tiên</span>
+              <span className="ticket-label ticket-label-date">Ngày gửi</span>
+            </div>
+            <ul className="task-list">
+              <li className="priority-high">
+                <div className="task-title">
+                  <span className="ticket-id">#123</span>
+                  <span className="ticket-desc">Không thể tải mô hình 3D lên module ngoại khóa</span>
+                </div>
+                <div className="ticket-meta">
+                  <span className="sender">Trường ABC</span>
+                  <span className="priority">Cao</span>
+                  <span className="date">06-07-2025</span>
+                </div>
+              </li>
+              <li className="priority-medium">
+                <div className="task-title">
+                  <span className="ticket-id">#124</span>
+                  <span className="ticket-desc">Lỗi cấu hình email SMTP</span>
+                </div>
+                <div className="ticket-meta">
+                  <span className="sender">Trường XYZ</span>
+                  <span className="priority">Trung bình</span>
+                  <span className="date">06-07-2025</span>
+                </div>
+              </li>
+              <li className="priority-low">
+                <div className="task-title">
+                  <span className="ticket-id">#125</span>
+                  <span className="ticket-desc">Tài khoản người dùng bị khóa</span>
+                </div>
+                <div className="ticket-meta">
+                  <span className="sender">Giáo viên John</span>
+                  <span className="priority">Thấp</span>
+                  <span className="date">06-06-2025</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        {/* End of Reminders*/}
+      </div>
+    </>
   );
 }

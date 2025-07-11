@@ -147,7 +147,7 @@ export default function TeacherDashboard() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-[#1E3A8A]">
           Dashboard Giáo viên
         </h1>
         <p className="text-gray-600 mt-1">
