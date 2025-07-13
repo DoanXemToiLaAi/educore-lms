@@ -1,96 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { BookOpen } from "lucide-react";
 import Footer from "../components/common/Footer";
+import Header from "../components/common/Header";
 import TeamSection from "../components/sections/TeamSection";
-
-const Header = () => (
-  <header className="bg-white bg-opacity-90 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-100">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex justify-between items-center h-20">
-        <div className="flex items-center">
-          <Link to="/" className="flex items-center group">
-            <div className="relative">
-              <div className="absolute -inset-2 bg-blue-100 rounded-full blur-lg opacity-0 group-hover:opacity-75 transition-opacity duration-300"></div>
-              <BookOpen className="h-10 w-10 text-blue-600 relative" />
-            </div>
-            <div className="ml-3">
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                EduCore
-              </span>
-              <span className="text-xs text-gray-500 block -mt-1">
-                Learning Management System
-              </span>
-            </div>
-          </Link>
-        </div>
-        <nav className="hidden md:flex items-center space-x-1">
-          <Link
-            to="/"
-            className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-all duration-300">
-            Trang chủ
-          </Link>
-          <Link
-            to="/features"
-            className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-all duration-300">
-            Tính năng
-          </Link>
-          <Link
-            to="/pricing"
-            className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-all duration-300">
-            Bảng giá
-          </Link>
-          <Link
-            to="/about"
-            className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-all duration-300">
-            Giới thiệu
-          </Link>
-          <Link
-            to="/contact"
-            className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-all duration-300">
-            Liên hệ
-          </Link>
-          <div className="flex items-center space-x-3 ml-4 pl-4 border-l border-gray-200">
-            <Link
-              to="/login"
-              className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-all duration-300 flex items-center">
-              <svg
-                className="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-                />
-              </svg>
-              Đăng nhập
-            </Link>
-            <Link
-              to="/register"
-              className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-sm hover:shadow flex items-center">
-              <svg
-                className="w-4 h-4 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-                />
-              </svg>
-              Đăng ký miễn phí
-            </Link>
-          </div>
-        </nav>
-      </div>
-    </div>
-  </header>
-);
 
 const HeroSection = () => (
   <section className="relative overflow-hidden min-h-[85vh] flex items-center">
@@ -161,7 +73,7 @@ const HeroSection = () => (
           </div>
         </div>
         <div className="hidden lg:block relative">
-          <div className="relative z-10 bg-white p-6 rounded-2xl shadow-xl transform hover:scale-105 transition-transform duration-300">
+          <div className="relative z-10 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transform hover:scale-105 transition-transform duration-300">
             <img
               src="./assets/images/dashboard-preview.png"
               alt="EduCore Dashboard Preview"
@@ -205,7 +117,7 @@ const AboutSection = () => (
           </svg>
           Về EduCore
         </span>
-        <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 to-blue-600 bg-clip-text text-transparent mb-6">
+        <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 dark:from-gray-100 to-blue-600 bg-clip-text text-transparent mb-6">
           Sứ mệnh của chúng tôi
         </h2>
         <div className="flex items-center justify-center gap-2 mb-8">
@@ -213,7 +125,7 @@ const AboutSection = () => (
           <div className="w-24 h-1 bg-blue-600 rounded-full"></div>
           <div className="w-12 h-1 bg-blue-200 rounded-full"></div>
         </div>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
           Chúng tôi tin rằng công nghệ là chìa khóa để cải thiện giáo dục, mang
           đến cơ hội học tập công bằng và hiệu quả cho mọi người. Với EduCore,
           chúng tôi đang xây dựng một nền tảng giáo dục số hiện đại, nơi kiến
@@ -262,10 +174,10 @@ const AboutSection = () => (
 
         <div className="space-y-8">
           <div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
               Tầm nhìn của chúng tôi
             </h3>
-            <p className="text-gray-600 text-lg leading-relaxed mb-6">
+            <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-6">
               EduCore LMS được phát triển với mục tiêu trở thành nền tảng giáo
               dục trực tuyến hàng đầu tại Việt Nam, nơi mọi người có thể học
               tập, phát triển và kết nối với nhau một cách hiệu quả nhất.
@@ -352,7 +264,7 @@ const AboutSection = () => (
 );
 
 const FeatureSection = () => (
-  <section className="py-24 bg-gray-50 relative overflow-hidden">
+  <section className="py-24 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
     <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-white opacity-50"></div>
     <div className="absolute right-0 top-0 w-1/3 h-full bg-gradient-to-l from-blue-50 to-transparent"></div>
 
@@ -459,7 +371,7 @@ const FeatureSection = () => (
 
         <div className="relative">
           <div className="absolute -top-12 -right-12 w-64 h-64 bg-blue-100 rounded-full filter blur-3xl opacity-30"></div>
-          <div className="relative bg-white p-8 rounded-2xl shadow-xl">
+          <div className="relative bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl">
             <img
               src="/src/assets/images/features-dashboard.png"
               alt="EduCore Features"
@@ -482,7 +394,7 @@ const FeatureSection = () => (
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300">
       <Header />
       <HeroSection />
       <AboutSection />

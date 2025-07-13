@@ -29,21 +29,21 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300">
       <Header currentPage="home" />
 
       {/* Hero Section */}
       <main className="pt-16">
-        <section className="relative bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-20 lg:py-32 overflow-hidden">
-          <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        <section className="relative bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950 dark:via-indigo-950 dark:to-purple-950 py-20 lg:py-32 overflow-hidden">
+          <div className="absolute inset-0 bg-grid-pattern opacity-5 dark:opacity-10"></div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div className="text-center max-w-4xl mx-auto">
-              <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-6">
-                <span className="w-2 h-2 bg-blue-600 rounded-full mr-2 animate-pulse"></span>
+              <div className="inline-flex items-center px-4 py-2 bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium mb-6">
+                <span className="w-2 h-2 bg-blue-600 dark:bg-blue-400 rounded-full mr-2 animate-pulse"></span>
                 Nền tảng giáo dục #1 Việt Nam
               </div>
 
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-gray-100 mb-6 leading-tight">
                 Nền tảng giáo dục trực tuyến
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 block">
                   tiên tiến nhất
@@ -89,13 +89,13 @@ export default function HomePage() {
         </section>
 
         {/* Features Preview */}
-        <section className="py-20 bg-white">
+        <section className="py-20 bg-white dark:bg-gray-950 transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                 Tại sao chọn EduCore?
               </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                 Khám phá những tính năng vượt trội giúp nâng cao chất lượng giáo
                 dục
               </p>
@@ -105,12 +105,12 @@ export default function HomePage() {
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="group p-8 rounded-2xl border border-gray-100 hover:border-blue-200 hover:shadow-lg transition-all duration-300">
+                  className="group p-8 rounded-2xl border border-gray-100 dark:border-gray-800 hover:border-blue-200 dark:hover:border-blue-800 hover:shadow-lg dark:hover:shadow-lg dark:hover:shadow-blue-900/10 transition-all duration-300 dark:bg-gray-900">
                   <div className="text-4xl mb-4">{feature.icon}</div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
@@ -120,7 +120,7 @@ export default function HomePage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+        <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-900">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
               Sẵn sàng bắt đầu hành trình giáo dục mới?
@@ -130,7 +130,7 @@ export default function HomePage() {
             </p>
             <Link
               to="/contact"
-              className="inline-flex items-center bg-white text-blue-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600 transition-all duration-200">
+              className="inline-flex items-center bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600 transition-all duration-200">
               Liên hệ tư vấn ngay
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>

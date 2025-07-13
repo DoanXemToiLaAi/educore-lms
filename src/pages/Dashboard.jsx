@@ -12,7 +12,7 @@ export default function Dashboard() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white dark:bg-gray-950">
       <TopBar
         sidebarPosition={sidebarPosition}
         setSidebarPosition={setSidebarPosition}

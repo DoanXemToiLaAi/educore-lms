@@ -56,21 +56,23 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950 dark:via-indigo-950 dark:to-purple-950 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-8">
           <Link
             to="/"
-            className="inline-flex items-center text-2xl font-bold text-gray-900 mb-2 group hover:text-blue-600 transition-colors">
+            className="inline-flex items-center text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2 group hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
             <BookOpen className="h-8 w-8 text-blue-600 mr-2 group-hover:scale-110 transition-transform" />
             EduCore
           </Link>
-          <p className="text-gray-600">Đăng nhập vào hệ thống</p>
+          <p className="text-gray-600 dark:text-gray-400">
+            Đăng nhập vào hệ thống
+          </p>
         </div>
 
         {/* Login Form */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
           <form onSubmit={handleLogin} className="space-y-6">
             {/* Role Selection */}
             <div>
@@ -81,10 +83,10 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="w-full flex items-center justify-between px-4 py-3 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                  className="w-full flex items-center justify-between px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
                   <div className="flex items-center">
                     <User className="h-5 w-5 text-gray-400 mr-3" />
-                    <span className="text-gray-900">
+                    <span className="text-gray-900 dark:text-gray-100">
                       {roleLabels[selectedRole]}
                     </span>
                     <span
@@ -100,7 +102,7 @@ export default function LoginPage() {
                 </button>
 
                 {isDropdownOpen && (
-                  <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden">
+                  <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg overflow-hidden">
                     {Object.entries(roleLabels).map(([role, label]) => (
                       <button
                         key={role}
@@ -109,10 +111,10 @@ export default function LoginPage() {
                           setSelectedRole(role);
                           setIsDropdownOpen(false);
                         }}
-                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors flex items-center justify-between ${
+                        className={`w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center justify-between ${
                           selectedRole === role
                             ? "bg-blue-50 text-blue-600"
-                            : "text-gray-900"
+                            : "text-gray-900 dark:text-gray-100"
                         }`}>
                         <span>{label}</span>
                         <span
@@ -193,7 +195,7 @@ export default function LoginPage() {
           <div className="mt-6 text-center">
             <Link
               to="/"
-              className="text-sm text-gray-600 hover:text-blue-600 transition-colors inline-flex items-center">
+              className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-flex items-center">
               ← Quay lại trang chủ
             </Link>
           </div>
