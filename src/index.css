@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "./assets/styles/animations.css";
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",

@@ -9,6 +9,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
+import ComponentsShowcase from "./pages/ComponentsShowcase";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -40,6 +41,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/components" element={<ComponentsShowcase />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </div>
