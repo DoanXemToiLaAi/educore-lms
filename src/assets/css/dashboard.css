@@ -1,17 +1,25 @@
+/* Card chart đều nhau, khoảng cách nhỏ lại */
 .three-charts {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    grid-gap: 32px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
 }
 /* Tăng kích thước tối thiểu và tối đa cho card chứa chart */
 .three-charts .chart-card {
-    min-width: 320px;
-    max-width: 520px;
-    margin: 0 auto;
+    min-width: 0;
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 0 16px 0;
 }
 /* Tăng kích thước canvas cho tenant-active-card */
 .three-charts .tenant-active-card canvas {
-    max-width: 220px;
-    height: 160px !important;
+    max-width: 240px;
+    height: 180px !important;
 }
 .three-charts .tenant-active-info i {
     font-size: 3.2rem;
@@ -266,7 +274,7 @@ body{
     position: fixed;
     top: 0;
     left: 0;
-    background: var(--primary);
+    background: var(--light);
     width: 230px;
     height: 100%;
     z-index: 2000;
@@ -286,17 +294,29 @@ body{
 .sidebar .logo{
     font-size: 24px;
     font-weight: 700;
-    height: 56px;
+    height: 72px;
     display: flex;
     align-items: center;
     color: var(--dark);
     z-index: 500;
     padding-bottom: 20px;
     box-sizing: content-box;
+    gap: 12px;
+}
+
+.sidebar .logo-img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+    margin-right: 8px;
+    display: block;
 }
 
 .sidebar .logo .logo-name span{
-    color: var(--light);
+    color: var(--primary);
 }
 
 .sidebar .logo .bx{
@@ -396,7 +416,7 @@ body{
 
 .content nav{
     height: 56px;
-    background: var(--primary);
+    background: var(--light);
     padding: 0 24px 0 0;
     display: flex;
     align-items: center;
@@ -406,8 +426,6 @@ body{
     left: 0;
     z-index: 1000;
 }
-
-
 
 .content nav a{
     color: var(--dark);
@@ -460,7 +478,7 @@ body{
 .content nav .notif{
     font-size: 20px;
     position: relative;
-    color: var(--light);
+    color: var(--primary);
 }
 
 .content nav .notif .count{

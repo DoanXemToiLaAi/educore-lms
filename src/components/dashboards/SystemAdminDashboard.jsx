@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
+import Chart from "chart.js/auto";
 import {
   School,
   Users,
@@ -52,6 +53,87 @@ const TenantCard = ({ name, schools, users, status }) => (
 );
 
 export default function SystemAdminDashboard() {
+  // Ref cho từng chart và instance
+  const pieRef = useRef(null);
+  const lineRef = useRef(null);
+  const barRef = useRef(null);
+  const pieChartInstance = useRef(null);
+  const lineChartInstance = useRef(null);
+  const barChartInstance = useRef(null);
+
+  useEffect(() => {
+    // Destroy chart cũ nếu có
+    if (pieChartInstance.current) pieChartInstance.current.destroy();
+    if (lineChartInstance.current) lineChartInstance.current.destroy();
+    if (barChartInstance.current) barChartInstance.current.destroy();
+
+    // Pie Chart
+    if (pieRef.current) {
+      pieChartInstance.current = new Chart(pieRef.current, {
+        type: "pie",
+        data: {
+          labels: ["Hoạt động", "Bảo trì", "Tạm dừng"],
+          datasets: [
+            {
+              data: [1450, 56, 0],
+              backgroundColor: ["#1E3A8A", "#CFE8FF", "#FBC02D"],
+            },
+          ],
+        },
+        options: {
+          plugins: { legend: { position: "bottom" } },
+        },
+      });
+    }
+    // Line Chart
+    if (lineRef.current) {
+      lineChartInstance.current = new Chart(lineRef.current, {
+        type: "line",
+        data: {
+          labels: ["Tháng 5", "Tháng 6", "Tháng 7"],
+          datasets: [
+            {
+              label: "Uptime (%)",
+              data: [99.7, 99.8, 99.9],
+              borderColor: "#1E3A8A",
+              backgroundColor: "#CFE8FF",
+              fill: false,
+              tension: 0.3,
+            },
+          ],
+        },
+        options: {
+          plugins: { legend: { display: false } },
+          scales: { y: { min: 99, max: 100 } },
+        },
+      });
+    }
+    // Bar Chart
+    if (barRef.current) {
+      barChartInstance.current = new Chart(barRef.current, {
+        type: "bar",
+        data: {
+          labels: ["Tháng 5", "Tháng 6", "Tháng 7"],
+          datasets: [
+            {
+              label: "Người dùng hoạt động",
+              data: [48000, 49500, 50000],
+              backgroundColor: "#1E3A8A",
+            },
+          ],
+        },
+        options: {
+          plugins: { legend: { display: false } },
+        },
+      });
+    }
+    // Cleanup khi unmount
+    return () => {
+      if (pieChartInstance.current) pieChartInstance.current.destroy();
+      if (lineChartInstance.current) lineChartInstance.current.destroy();
+      if (barChartInstance.current) barChartInstance.current.destroy();
+    };
+  }, []);
   const mockTenants = [
     { name: "Sở GD&ĐT Hà Nội", schools: 245, users: 12500, status: "active" },
     { name: "Sở GD&ĐT TP.HCM", schools: 189, users: 9800, status: "active" },
@@ -71,7 +153,7 @@ export default function SystemAdminDashboard() {
           <h1>Tổng quan</h1>
           <ul className="breadcrumb">
             <li>
-              <a href="#">Tổng quan</a>
+              <a href="#">Tổng quan hệ thống</a>
             </li>
           </ul>
         </div>
@@ -91,7 +173,7 @@ export default function SystemAdminDashboard() {
               <p>Số lượng Tenant hoạt động</p>
             </div>
           </div>
-          <canvas id="tenantActivePieChart"></canvas>
+          <canvas ref={pieRef}></canvas>
         </div>
         <div className="chart-card uptime-card">
           <div className="tenant-active-info">
@@ -101,7 +183,7 @@ export default function SystemAdminDashboard() {
               <p>Tỷ lệ hoạt động của hệ thống</p>
             </div>
           </div>
-          <canvas id="uptimeLineChart"></canvas>
+          <canvas ref={lineRef}></canvas>
         </div>
         <div className="chart-card user-active-card">
           <div className="tenant-active-info">
@@ -111,7 +193,7 @@ export default function SystemAdminDashboard() {
               <p>Tổng số người dùng đang hoạt động</p>
             </div>
           </div>
-          <canvas id="activeUserBarChart"></canvas>
+          <canvas ref={barRef}></canvas>
         </div>
       </div>
       {/* End of Insights as Charts */}

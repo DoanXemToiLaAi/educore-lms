@@ -41,7 +41,7 @@ export default function TopBar({
     <nav className="navbar" >
       <i
         className="bx bx-menu"
-        style={{ color: '#fff', cursor: 'pointer', fontSize: 24 }}
+        style={{ color: '#1E3A8A', cursor: 'pointer', fontSize: 24 }}
         onClick={() => setIsSidebarCollapsed((v) => !v)}
       ></i>
       <form action="#" className={`navbar-form${isSearchShow ? ' show' : ''}`}> 
