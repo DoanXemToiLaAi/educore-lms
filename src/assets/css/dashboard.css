@@ -18,8 +18,10 @@
 }
 /* Tăng kích thước canvas cho tenant-active-card */
 .three-charts .tenant-active-card canvas {
-    max-width: 240px;
-    height: 180px !important;
+    max-width: 200px !important;
+    width: 200px !important;
+    height: 200px !important;
+    aspect-ratio: 1;
 }
 .three-charts .tenant-active-info i {
     font-size: 3.2rem;
@@ -65,8 +67,10 @@
 }
 /* Tăng kích thước canvas cho tenant-active-card (fallback) */
 .tenant-active-card canvas {
-    max-width: 180px;
-    height: 130px !important;
+    max-width: 200px !important;
+    width: 200px !important;
+    height: 200px !important;
+    aspect-ratio: 1;
     margin-top: 8px;
 }
 .ticket-table-wrapper {
@@ -173,7 +177,141 @@
 .task-list .priority-low .priority {
     color: var(--success);
 }
-/* Chart Cards for Insights */
+/* Support Tickets Table Styles */
+.reminders table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reminders table th {
+  padding: 12px 8px;
+  font-size: 13px;
+  text-align: left;
+  border-bottom: 1px solid var(--grey);
+  color: var(--dark-grey);
+  font-weight: 600;
+}
+
+.reminders table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--grey);
+  color: var(--dark);
+}
+
+.reminders table tr:last-child td {
+  border-bottom: none;
+}
+
+.reminders table tbody tr {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reminders table tbody tr:hover {
+  background: var(--grey);
+}
+
+.reminders table .priority-high {
+  border-left: 4px solid var(--danger);
+}
+
+.reminders table .priority-medium {
+  border-left: 4px solid var(--warning);
+}
+
+.reminders table .priority-low {
+  border-left: 4px solid var(--success);
+}
+
+.reminders table .priority-high .priority {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.reminders table .priority-medium .priority {
+  color: var(--warning);
+  font-weight: 600;
+}
+
+.reminders table .priority-low .priority {
+  color: var(--success);
+  font-weight: 600;
+}
+
+/* Column widths for support tickets table */
+.reminders table th:nth-child(1),
+.reminders table td:nth-child(1) {
+  width: 80px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.reminders table th:nth-child(2),
+.reminders table td:nth-child(2) {
+  width: auto;
+  min-width: 250px;
+}
+
+.reminders table th:nth-child(3),
+.reminders table td:nth-child(3) {
+  width: 150px;
+}
+
+.reminders table th:nth-child(4),
+.reminders table td:nth-child(4) {
+  width: 100px;
+  text-align: center;
+}
+
+.reminders table th:nth-child(5),
+.reminders table td:nth-child(5) {
+  width: 100px;
+  text-align: center;
+}
+
+/* Scrollbar Styles for Dark Mode Support */
+.task-list::-webkit-scrollbar,
+.class-selector::-webkit-scrollbar,
+.class-list-container::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.task-list::-webkit-scrollbar-track,
+.class-selector::-webkit-scrollbar-track,
+.class-list-container::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 6px;
+}
+
+.task-list::-webkit-scrollbar-thumb,
+.class-selector::-webkit-scrollbar-thumb,
+.class-list-container::-webkit-scrollbar-thumb {
+  background: rgba(170, 170, 170, 0.5);
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.task-list::-webkit-scrollbar-thumb:hover,
+.class-selector::-webkit-scrollbar-thumb:hover,
+.class-list-container::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Dark mode scrollbar support */
+body.dark .task-list::-webkit-scrollbar-track,
+body.dark .class-selector::-webkit-scrollbar-track,
+body.dark .class-list-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+body.dark .task-list::-webkit-scrollbar-thumb,
+body.dark .class-selector::-webkit-scrollbar-thumb,
+body.dark .class-list-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Modal Styles */
 .insights-charts {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -194,9 +332,10 @@
 }
 /* Tăng kích thước canvas cho tất cả chart-card */
 .chart-card canvas {
-    width: 100% !important;
-    max-width: 260px;
-    height: 180px !important;
+    width: 200px !important;
+    max-width: 200px !important;
+    height: 200px !important;
+    aspect-ratio: 1;
     margin-bottom: 10px;
 }
 .chart-card p {
@@ -215,8 +354,10 @@
         padding: 18px 4px 10px 4px;
     }
     .chart-card canvas {
-        max-width: 180px;
-        height: 120px !important;
+        max-width: 160px !important;
+        width: 160px !important;
+        height: 160px !important;
+        aspect-ratio: 1;
     }
 }
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
@@ -300,8 +441,12 @@ body{
     color: var(--dark);
     z-index: 500;
     padding-bottom: 20px;
+    margin-left: 10px;
     box-sizing: content-box;
     gap: 12px;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 .sidebar .logo-img {
@@ -309,8 +454,9 @@ body{
     height: 48px;
     object-fit: contain;
     border-radius: 12px;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
     margin-right: 8px;
     display: block;
 }
@@ -400,6 +546,35 @@ body{
 
 .sidebar .side-menu li a.logout{
     color: var(--danger);
+}
+
+.sidebar .side-menu li button.logout{
+    width: 100%;
+    height: 100%;
+    background: var(--light);
+    display: flex;
+    align-items: center;
+    border-radius: 48px;
+    font-size: 16px;
+    color: var(--danger);
+    white-space: nowrap;
+    overflow-x: hidden;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.sidebar.close .side-menu li button.logout{
+    width: calc(48px - (4px * 2));
+    transition: all 0.3s ease;
+}
+
+.sidebar .side-menu li button.logout .bx{
+    min-width: calc(60px - ((4px + 6px) * 2));
+    display: flex;
+    font-size: 1.6rem;
+    justify-content: center;
 }
 
 .content{
@@ -583,6 +758,15 @@ body{
     justify-content: center;
     grid-gap: 10px;
     font-weight: 500;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    transition: background 0.2s ease;
+}
+
+.content main .header .report:hover{
+    background: #1e40af;
 }
 
 .content main .insights{
@@ -742,6 +926,7 @@ body{
 .content main .bottom-data .reminders{
     flex-grow: 1;
     flex-basis: 300px;
+    max-height: fit-content;
 }
 
 .content main .bottom-data .reminders .task-list{
@@ -784,63 +969,185 @@ body{
    margin-bottom: 0;
 }
 
+/* System Resources Section */
+.system-resources {
+    margin-top: 36px;
+    margin-bottom: 24px;
+}
+
+.system-resources .header {
+    margin-bottom: 24px;
+}
+
+.system-resources .header .left h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--dark);
+}
+
+.system-resources .header .left p {
+    color: var(--dark-grey);
+    font-size: 16px;
+    margin: 0;
+}
+
+.resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.resource-card {
+    background: var(--light);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.04);
+    display: flex;
+    flex-direction: column;
+    min-height: 220px;
+}
+
+.resource-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.resource-info i {
+    font-size: 2.4rem;
+    color: var(--primary);
+    background: var(--light-primary);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resource-info h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: var(--dark);
+}
+
+.resource-info p {
+    margin: 0;
+    color: var(--dark-grey);
+    font-size: 0.95rem;
+}
+
+.gauge-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.gauge-container canvas {
+    width: 120px !important;
+    height: 120px !important;
+    aspect-ratio: 1;
+}
+
+.gauge-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.network-chart {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.network-chart canvas {
+    width: 100% !important;
+    height: 140px !important;
+}
+
 @media screen and (max-width: 768px) {
-    .sidebar{
-        width: 200px;
+    .resources-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
     }
-
-    .content{
-        width: calc(100% - 60px);
-        left: 200px;
+    
+    .resource-card {
+        padding: 20px;
+        min-height: 180px;
     }
-
+    
+    .gauge-container canvas {
+        width: 100px !important;
+        height: 100px !important;
+        aspect-ratio: 1;
+    }
+    
+    .gauge-value {
+        font-size: 1.5rem;
+    }
 }
 
 @media screen and (max-width: 576px) {
-    
-    .content nav form .form-input input{
-        display: none;
-    }
-
-    .content nav form .form-input button{
-        width: auto;
-        height: auto;
-        background: transparent;
-        color: var(--dark);
-        border-radius: none;
-    }
-
-    .content nav form.show .form-input input{
-        display: block;
-        width: 100%;
-    }
-
-    .content nav form.show .form-input button{
-        width: 36px;
-        height: 100%;
-        color: var(--light);
-        background: var(--danger);
-        border-radius: 0 36px 36px 0;
-    }
-
-    .content nav form.show~.notif, .content nav form.show~.profile{
-        display: none;
-    }
-
-    .content main .insights {
+    .resources-grid {
         grid-template-columns: 1fr;
     }
-
-    .content main .bottom-data .header{
-        min-width: 340px;
+    
+    .system-resources .header .left h2 {
+        font-size: 24px;
     }
+}
 
-    .content main .bottom-data .orders table{
-        min-width: 340px;
+/* Tenant Growth Section - Large Chart */
+.tenant-growth-section {
+    margin-top: 36px;
+    margin-bottom: 24px;
+}
+
+.large-chart {
+    background: var(--light);
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.04);
+    padding: 24px;
+    min-height: 400px;
+    width: 100%;
+}
+
+.large-chart canvas {
+    width: 100% !important;
+    height: 350px !important;
+    max-width: none !important;
+}
+
+@media screen and (max-width: 768px) {
+    .large-chart {
+        padding: 20px;
+        min-height: 300px;
     }
-
-    .content main .bottom-data .reminders .task-list{
-        min-width: 340px;
+    
+    .large-chart canvas {
+        height: 250px !important;
     }
+}
 
+@media screen and (max-width: 576px) {
+    .large-chart {
+        padding: 16px;
+        min-height: 250px;
+    }
+    
+    .large-chart canvas {
+        height: 200px !important;
+    }
 }

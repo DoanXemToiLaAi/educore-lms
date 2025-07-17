@@ -1,35 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Users,
   GraduationCap,
-  Calendar,
   BarChart3,
-  TrendingUp,
   UserCheck,
 } from "lucide-react";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import "../../assets/css/dashboard.css";
+import "../../assets/css/school-admin-dashboard.css";
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const StatCard = ({ icon: Icon, title, value, change, color }) => (
-  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-    <div className="flex items-center justify-between">
-      <div>
-        <p className="text-sm font-medium text-gray-600">{title}</p>
-        <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
-        {change && (
-          <p
-            className={`text-sm mt-1 ${
-              change.positive ? "text-green-600" : "text-red-600"
-            }`}>
-            {change.positive ? "+" : ""}
-            {change.value}% so với tháng trước
-          </p>
-        )}
-      </div>
-      <div className={`p-3 rounded-lg ${color}`}>
-        <Icon className="h-6 w-6 text-white" />
-      </div>
+  <li className="stat-card">
+    <i className={`bx ${getIconClass(Icon)}`}></i>
+    <div className="info">
+      <h3>{value}</h3>
+      <p>{title}</p>
+      {change && (
+        <span className={`change ${change.positive ? 'positive' : 'negative'}`}>
+          {change.positive ? "+" : ""}{change.value}% so với tháng trước
+        </span>
+      )}
     </div>
-  </div>
+  </li>
 );
+
+const getIconClass = (Icon) => {
+  if (Icon === UserCheck) return 'bx-user-check';
+  if (Icon === GraduationCap) return 'bx-graduation';
+  if (Icon === Users) return 'bx-group';
+  if (Icon === BarChart3) return 'bx-bar-chart-alt-2';
+  return 'bx-home';
+};
 
 const ClassOverviewCard = ({
   grade,
@@ -37,23 +48,56 @@ const ClassOverviewCard = ({
   totalStudents,
   averageScore,
 }) => (
-  <div className="bg-white p-4 rounded-lg border border-gray-200">
-    <div className="flex items-center justify-between mb-3">
-      <h3 className="font-semibold text-gray-900">Khối {grade}</h3>
-      <span className="text-sm text-gray-500">{totalClasses} lớp</span>
+  <div className="class-overview-card">
+    <div className="class-header">
+      <h3>Khối {grade}</h3>
+      <span className="class-count">{totalClasses} lớp</span>
     </div>
-    <div className="space-y-2 text-sm">
-      <div className="flex justify-between">
-        <span className="text-gray-600">Học sinh:</span>
-        <span className="font-medium">{totalStudents}</span>
+    <div className="class-stats">
+      <div className="stat-row">
+        <span>Học sinh:</span>
+        <span className="stat-value">{totalStudents}</span>
       </div>
-      <div className="flex justify-between">
-        <span className="text-gray-600">Điểm TB:</span>
-        <span className="font-medium text-blue-600">{averageScore}</span>
+      <div className="stat-row">
+        <span>Điểm TB:</span>
+        <span className="stat-value score">{averageScore}</span>
       </div>
     </div>
   </div>
 );
+
+// Dữ liệu mẫu cho biểu đồ điểm trung bình của 3 khối theo tháng
+const chartData = {
+  labels: [
+    "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+    "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+  ],
+  datasets: [
+    {
+      label: "Khối 10",
+      data: [8.0, 8.1, 8.2, 8.3, 8.2, 8.2, 8.1, 8.0, 8.2, 8.3, 8.2, 8.1],
+      backgroundColor: "#3b82f6",
+    },
+    {
+      label: "Khối 11",
+      data: [7.8, 7.9, 8.0, 7.9, 7.8, 7.9, 7.8, 7.7, 7.9, 8.0, 7.9, 7.8],
+      backgroundColor: "#10b981",
+    },
+    {
+      label: "Khối 12",
+      data: [8.3, 8.4, 8.5, 8.5, 8.6, 8.5, 8.4, 8.5, 8.6, 8.5, 8.4, 8.5],
+      backgroundColor: "#f59e42",
+    },
+  ],
+};
+
+const chartOptions = {
+  responsive: true,
+  plugins: {
+    legend: { position: "top" },
+    title: { display: true, text: "Điểm trung bình các khối theo tháng" },
+  },
+};
 
 export default function SchoolAdminDashboard() {
   const mockGrades = [
@@ -62,181 +106,328 @@ export default function SchoolAdminDashboard() {
     { grade: 12, totalClasses: 6, totalStudents: 210, averageScore: 8.5 },
   ];
 
+  // Danh sách lớp với quy tắc: khối 10 là A, 11 là B, 12 là C
+  const classList = [
+    // Khối 10 - lớp A
+    { id: "10A1", name: "Lớp 10A1", grade: 10, students: 32, avgScore: 8.1 },
+    { id: "10A2", name: "Lớp 10A2", grade: 10, students: 28, avgScore: 7.9 },
+    { id: "10A3", name: "Lớp 10A3", grade: 10, students: 30, avgScore: 8.3 },
+    { id: "10A4", name: "Lớp 10A4", grade: 10, students: 29, avgScore: 8.0 },
+    { id: "10A5", name: "Lớp 10A5", grade: 10, students: 31, avgScore: 8.2 },
+    // Khối 11 - lớp B
+    { id: "11B1", name: "Lớp 11B1", grade: 11, students: 33, avgScore: 7.8 },
+    { id: "11B2", name: "Lớp 11B2", grade: 11, students: 27, avgScore: 8.0 },
+    { id: "11B3", name: "Lớp 11B3", grade: 11, students: 30, avgScore: 7.7 },
+    { id: "11B4", name: "Lớp 11B4", grade: 11, students: 28, avgScore: 8.1 },
+    { id: "11B5", name: "Lớp 11B5", grade: 11, students: 32, avgScore: 7.9 },
+    // Khối 12 - lớp C
+    { id: "12C1", name: "Lớp 12C1", grade: 12, students: 30, avgScore: 8.4 },
+    { id: "12C2", name: "Lớp 12C2", grade: 12, students: 29, avgScore: 8.2 },
+    { id: "12C3", name: "Lớp 12C3", grade: 12, students: 31, avgScore: 8.6 },
+    { id: "12C4", name: "Lớp 12C4", grade: 12, students: 28, avgScore: 8.3 },
+    { id: "12C5", name: "Lớp 12C5", grade: 12, students: 32, avgScore: 8.5 },
+  ];
+
+  const timetable = {
+    "10A1": [
+      {
+        period: "Tiết 1-2",
+        subject: "Toán học",
+        teacher: "Nguyễn Văn A",
+        time: "09:30-10:15",
+      },
+      {
+        period: "Tiết 3-4",
+        subject: "Vật lý",
+        teacher: "Phạm Thị D",
+        time: "12:20-13:05",
+      },
+      {
+        period: "Tiết 5",
+        subject: "Lịch sử",
+        teacher: "Mai XUân E",
+        time: "13:10-13:55",
+      },
+    ],
+    "11B2": [
+      {
+        period: "Tiết 1-2",
+        subject: "Hóa học",
+        teacher: "Trần Thị B",
+        time: "07:00-08:30",
+      },
+      {
+        period: "Tiết 3-4",
+        subject: "Văn học",
+        teacher: "Lê Văn E",
+        time: "20:45-21:15",
+      },
+    ],
+    "12C3": [
+      {
+        period: "Tiết 1-2",
+        subject: "Tiếng Anh",
+        teacher: "Lê Văn C",
+        time: "07:00-08:30",
+      },
+      {
+        period: "Tiết 3-4",
+        subject: "Sinh học",
+        teacher: "Nguyễn Thị F",
+        time: "08:45-10:15",
+      },
+    ],
+  };
+
+  const [selectedClass, setSelectedClass] = useState(classList[0].id);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedGrade, setSelectedGrade] = useState(null);
+
+  // Hàm lấy ngày hôm nay dạng DD/MM/YYYY
+  function getTodayString() {
+    const now = new Date();
+    return `${now.getDate().toString().padStart(2, "0")}/${(now.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}/${now.getFullYear()}`;
+  }
+
+  // Hàm kiểm tra tiết hiện tại
+  function getPeriodStatus(timeRange) {
+    const [start, end] = timeRange.split("-");
+    const now = new Date();
+    const [startH, startM] = start.split(":").map(Number);
+    const [endH, endM] = end.split(":").map(Number);
+    const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startH, startM);
+    const endTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endH, endM);
+
+    if (now >= startTime && now <= endTime) return "current";
+    if (now < startTime) return "next";
+    return "normal";
+  }
+
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-[#1E3A8A]">
-          Quản trị trường học
-        </h1>
-        <p className="text-gray-600 mt-1">
-          Tổng quan và quản lý toàn bộ hoạt động của trường
-        </p>
+    <div className="school-admin-dashboard">
+      <div className="header">
+        <div className="left">
+          <h1>Tổng quan</h1>
+          <p>Tổng quan và quản lý toàn bộ hoạt động của trường</p>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <ul className="insights">
         <StatCard
           icon={UserCheck}
           title="Tổng học sinh"
           value="735"
-          change={{ value: 5.2, positive: true }}
-          color="bg-blue-500"
         />
         <StatCard
           icon={GraduationCap}
           title="Giáo viên"
           value="45"
-          change={{ value: 2.1, positive: true }}
-          color="bg-green-500"
         />
         <StatCard
           icon={Users}
           title="Lớp học"
           value="21"
-          color="bg-purple-500"
         />
         <StatCard
           icon={BarChart3}
           title="Điểm TB trường"
           value="8.2"
           change={{ value: 3.5, positive: true }}
-          color="bg-orange-500"
         />
+      </ul>
+
+      {/* Biểu đồ điểm trung bình các lớp theo tháng */}
+      <div className="chart-section">
+        <Bar data={chartData} options={chartOptions} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-            <div className="p-6 border-b border-gray-100">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900">
-                  Tổng quan theo khối
-                </h2>
-                <button className="text-blue-600 text-sm font-medium hover:text-blue-700">
-                  Xem chi tiết
+      <div className="bottom-data">
+        <div className="orders class-overview-section">
+          <div className="header">
+            <h3>Tổng quan theo khối</h3>
+            <button
+              className="view-details-btn"
+              onClick={() => setShowModal(true)}
+            >
+              Xem chi tiết
+            </button>
+          </div>
+          
+          <div className="class-overview-grid">
+            {mockGrades.map((grade, index) => (
+              <ClassOverviewCard key={index} {...grade} />
+            ))}
+          </div>
+
+          <div className="timetable-section">
+            <h3 className="timetable-title">
+              Thời khóa biểu hôm nay
+              <span className="date-label">
+                {getTodayString()}
+              </span>
+            </h3>
+            
+            <div className="class-selector">
+              {classList.map((cls) => (
+                <button
+                  key={cls.id}
+                  className={`class-btn ${
+                    selectedClass === cls.id ? 'active' : ''
+                  }`}
+                  onClick={() => setSelectedClass(cls.id)}
+                >
+                  {cls.name}
                 </button>
-              </div>
+              ))}
             </div>
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                {mockGrades.map((grade, index) => (
-                  <ClassOverviewCard key={index} {...grade} />
-                ))}
-              </div>
-
-              <div className="border-t border-gray-100 pt-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Thời khóa biểu hôm nay
-                </h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                    <div>
-                      <p className="font-medium text-gray-900">
-                        Tiết 1-2: Toán học
+            
+            <div className="timetable-list">
+              {(timetable[selectedClass] || []).map((item, idx) => {
+                const status = getPeriodStatus(item.time);
+                let statusClass = '';
+                if (status === "current") statusClass = 'current';
+                else if (status === "next") statusClass = 'next';
+                
+                return (
+                  <div
+                    key={idx}
+                    className={`timetable-item ${statusClass}`}
+                  >
+                    <div className="period-info">
+                      <p className="period-title">
+                        {item.period}: {item.subject}
                       </p>
-                      <p className="text-sm text-gray-600">
-                        Lớp 10A1 - GV: Nguyễn Văn A
-                      </p>
-                    </div>
-                    <span className="text-sm text-blue-600 font-medium">
-                      7:00 - 8:30
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                    <div>
-                      <p className="font-medium text-gray-900">
-                        Tiết 3-4: Văn học
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        Lớp 11B2 - GV: Trần Thị B
+                      <p className="period-details">
+                        {classList.find(c => c.id === selectedClass)?.name || selectedClass} - GV: {item.teacher}
                       </p>
                     </div>
-                    <span className="text-sm text-green-600 font-medium">
-                      8:45 - 10:15
+                    <span className="period-time">
+                      {item.time.replace("-", " - ")}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
-                    <div>
-                      <p className="font-medium text-gray-900">
-                        Tiết 5-6: Tiếng Anh
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        Lớp 12A3 - GV: Lê Văn C
-                      </p>
-                    </div>
-                    <span className="text-sm text-orange-600 font-medium">
-                      10:30 - 12:00
-                    </span>
-                  </div>
+                );
+              })}
+              {!timetable[selectedClass] && (
+                <div className="no-timetable">
+                  Lớp này chưa có thời khóa biểu hôm nay.
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
 
-        <div className="space-y-6">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-            <div className="p-6 border-b border-gray-100">
-              <h2 className="text-lg font-semibold text-gray-900">
-                Thao tác nhanh
-              </h2>
-            </div>
-            <div className="p-6 space-y-3">
-              <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
-                Tạo lớp học mới
-              </button>
-              <button className="w-full border border-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors">
-                Quản lý giáo viên
-              </button>
-              <button className="w-full border border-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors">
-                Xem báo cáo
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-            <div className="p-6 border-b border-gray-100">
-              <h2 className="text-lg font-semibold text-gray-900">
-                Báo cáo gần đây
-              </h2>
-            </div>
-            <div className="p-6 space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <BarChart3 className="h-4 w-4 text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    Báo cáo học tập tháng 12
-                  </p>
-                  <p className="text-xs text-gray-500">Cập nhật 2 giờ trước</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <TrendingUp className="h-4 w-4 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    Thống kê điểm danh
-                  </p>
-                  <p className="text-xs text-gray-500">Cập nhật 1 ngày trước</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Calendar className="h-4 w-4 text-purple-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    Lịch thi cuối kỳ
-                  </p>
-                  <p className="text-xs text-gray-500">Cập nhật 3 ngày trước</p>
-                </div>
-              </div>
-            </div>
+        <div className="reminders actions-section">
+          <div className="action-buttons">
+            <button className="action-btn primary">
+              Tạo lớp học mới
+            </button>
+            <button className="action-btn secondary">
+              Tạo lịch thi mới
+            </button>
+            <button className="action-btn secondary">
+              Thêm thời khóa biểu
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Khối báo cáo gần đây riêng biệt */}
+      <div className="recent-reports-section">
+        <div className="recent-reports">
+          <div className="header">
+            <h3>Báo cáo gần đây</h3>
+          </div>
+          <ul className="task-list">
+            <li className="completed">
+              <div className="task-title">
+                <i className="bx bx-group"></i>
+                <p>Đã thêm lớp học mới</p>
+              </div>
+              <span className="task-time">30 phút trước</span>
+            </li>
+            <li className="not-completed">
+              <div className="task-title">
+                <i className="bx bx-calendar"></i>
+                <p>Đã tạo lịch thi mới</p>
+              </div>
+              <span className="task-time">2 giờ trước</span>
+            </li>
+            <li className="completed">
+              <div className="task-title">
+                <i className="bx bx-bar-chart-alt-2"></i>
+                <p>Đã đổi thời khóa biểu</p>
+              </div>
+              <span className="task-time">1 ngày trước</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Modal chọn khối */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3 className="modal-title">Chọn khối để xem chi tiết</h3>
+            <div className="grade-selector">
+              {mockGrades.map((grade) => (
+                <button
+                  key={grade.grade}
+                  className={`grade-btn ${
+                    selectedGrade === grade.grade ? 'active' : ''
+                  }`}
+                  onClick={() => setSelectedGrade(grade.grade)}
+                >
+                  Khối {grade.grade}
+                </button>
+              ))}
+            </div>
+            {selectedGrade && (
+              <div className="grade-details">
+                {(() => {
+                  const info = mockGrades.find(g => g.grade === selectedGrade);
+                  const classesInGrade = classList.filter(cls => cls.grade === selectedGrade);
+                  return (
+                    <>
+                      <p className="grade-info-title">Thông tin khối {info.grade}</p>
+                      <div className="grade-stats">
+                        <div>• Số lớp: <span className="stat-value">{info.totalClasses}</span></div>
+                        <div>• Tổng học sinh: <span className="stat-value">{info.totalStudents}</span></div>
+                        <div>• Điểm trung bình: <span className="stat-value score">{info.averageScore}</span></div>
+                      </div>
+                      <p className="class-list-title">Danh sách lớp:</p>
+                      <div className="class-list-container">
+                        {classesInGrade.length === 0 && (
+                          <div className="no-classes">Không có lớp nào thuộc khối này.</div>
+                        )}
+                        {classesInGrade.map(cls => (
+                          <div key={cls.id} className="class-item">
+                            <span className="class-name">{cls.name}</span>
+                            <span className="class-students">Sĩ số: <span className="value">{cls.students}</span></span>
+                            <span className="class-score">Điểm TB: <span className="value">{cls.avgScore}</span></span>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+            )}
+            <div className="modal-actions">
+              <button
+                className="close-btn"
+                onClick={() => {
+                  setShowModal(false);
+                  setSelectedGrade(null);
+                }}
+              >
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

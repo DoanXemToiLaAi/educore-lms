@@ -1,19 +1,21 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigation } from "../context/NavigationContext";
 import Sidebar from "../components/common/Sidebar";
 import TopBar from "../components/common/TopBar";
 import DashboardContent from "../components/dashboards/DashboardContent";
 
 function Dashboard() {
   const { user } = useAuth();
+  const { activeMenuIndex, setActiveMenu, getActiveMenuIndex } = useNavigation();
+  
   // Sidebar collapse state, ghi nhớ qua localStorage
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
     const stored = localStorage.getItem("sidebar-collapsed");
     // Nếu chưa có trong localStorage, mặc định là false (sidebar hiện)
     return stored === "true";
   });
-  // Active sidebar menu
-  const [activeMenu, setActiveMenu] = useState(2); // 0: Tổng quan, 1: Quản lý trường học, 2: Quản lý học tập, ...
+  
   // Search form show (mobile)
   const [isSearchShow, setIsSearchShow] = useState(false);
   // Theme (dark/light) - ghi nhớ qua localStorage
@@ -21,6 +23,14 @@ function Dashboard() {
     const stored = localStorage.getItem("theme-mode");
     return stored === "dark";
   });
+
+  // Set active menu index dựa trên role khi component mount
+  useEffect(() => {
+    if (user?.role) {
+      const correctActiveIndex = getActiveMenuIndex(user.role);
+      setActiveMenu(correctActiveIndex);
+    }
+  }, [user?.role, getActiveMenuIndex, setActiveMenu]);
 
   // Ghi nhớ trạng thái mỗi khi thay đổi
   useEffect(() => {
@@ -62,7 +72,7 @@ function Dashboard() {
   // Sidebar menu click handler
   const handleSidebarMenuClick = useCallback((idx) => {
     setActiveMenu(idx);
-  }, []);
+  }, [setActiveMenu]);
 
   // Search button click (mobile)
   const handleSearchBtnClick = useCallback((e) => {
@@ -78,8 +88,9 @@ function Dashboard() {
     <div style={{ minHeight: '100vh', background: 'var(--grey)' }}>
       <Sidebar
         isCollapsed={isSidebarCollapsed}
-        activeMenu={activeMenu}
+        activeMenu={activeMenuIndex}
         onMenuClick={handleSidebarMenuClick}
+        role={user.role}
       />
       <div className="content">
         {/* TopBar fixed trên cùng, không bị tràn */}
