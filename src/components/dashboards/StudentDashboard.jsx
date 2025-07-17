@@ -1,52 +1,75 @@
-import React from "react";
+import React, { useState } from "react";
 import { BookOpen, Award, Clock, Play, FileText, Bell } from "lucide-react";
 
 const QuickStatCard = ({ icon: Icon, title, value, color }) => (
-  <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-    <div className="flex items-center space-x-3">
-      <div className={`p-2 rounded-lg ${color}`}>
-        <Icon className="h-5 w-5 text-white" />
-      </div>
-      <div>
-        <p className="text-sm text-gray-600">{title}</p>
-        <p className="text-lg font-semibold text-gray-900">{value}</p>
-      </div>
+  <div className="bg-white flex items-center justify-center py-6 rounded-lg shadow-sm border border-gray-100 h-28">
+    <div className={`p-4 rounded-lg mr-16 flex-shrink-0 flex items-center justify-center ${color}`}>
+      <Icon className="h-10 w-10 text-white" />
+    </div>
+    <div className="flex flex-col items-center justify-center ml-2">
+      <p className="text-base font-semibold text-gray-700">{title}</p>
+      <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
     </div>
   </div>
 );
 
-const ClassCard = ({ subject, teacher, time, room, status }) => (
-  <div className="bg-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
-    <div className="flex items-center justify-between mb-2">
-      <h3 className="font-semibold text-gray-900">{subject}</h3>
-      <span
-        className={`px-2 py-1 rounded-full text-xs font-medium ${
-          status === "live"
-            ? "bg-red-100 text-red-800"
-            : status === "upcoming"
-            ? "bg-blue-100 text-blue-800"
-            : "bg-gray-100 text-gray-800"
-        }`}>
-        {status === "live"
-          ? "Đang diễn ra"
-          : status === "upcoming"
-          ? "Sắp tới"
-          : "Đã kết thúc"}
-      </span>
+const getClassStatus = (start, end) => {
+  const now = new Date();
+  const [startH, startM] = start.split(":").map(Number);
+  const [endH, endM] = end.split(":").map(Number);
+  const startTime = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    startH,
+    startM
+  );
+  const endTime = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    endH,
+    endM
+  );
+
+  if (now >= startTime && now <= endTime) return "live";
+  if (now < startTime) return "upcoming";
+  return "completed";
+};
+
+const ClassCard = ({ subject, teacher, time, room, status }) => {
+  // Tính trạng thái thực tế theo thời gian
+  const [start, end] = time.split(" - ").map((t) => t.trim());
+  const realStatus = getClassStatus(start, end);
+
+  return (
+    <div className="bg-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="font-semibold text-gray-900">{subject}</h3>
+        <span
+          className={`px-2 py-1 rounded-full text-xs font-medium ${
+            realStatus === "live"
+              ? "bg-green-100 text-green-800"
+              : realStatus === "upcoming"
+              ? "bg-blue-100 text-blue-800"
+              : "bg-gray-100 text-gray-800"
+          }`}
+        >
+          {realStatus === "live"
+            ? "Đang diễn ra"
+            : realStatus === "upcoming"
+            ? "Sắp tới"
+            : "Đã kết thúc"}
+        </span>
+      </div>
+      <div className="space-y-1 text-sm text-gray-600">
+        <p>GV: {teacher}</p>
+        <p>Thời gian: {time}</p>
+        <p>Phòng: {room}</p>
+      </div>
     </div>
-    <div className="space-y-1 text-sm text-gray-600">
-      <p>GV: {teacher}</p>
-      <p>Thời gian: {time}</p>
-      <p>Phòng: {room}</p>
-    </div>
-    {status === "live" && (
-      <button className="mt-3 w-full bg-red-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-red-700 transition-colors flex items-center justify-center">
-        <Play className="h-4 w-4 mr-2" />
-        Tham gia ngay
-      </button>
-    )}
-  </div>
-);
+  );
+};
 
 const AssignmentCard = ({ title, subject, dueDate, status }) => (
   <div className="bg-white p-4 rounded-lg border border-gray-200">
@@ -59,7 +82,8 @@ const AssignmentCard = ({ title, subject, dueDate, status }) => (
             : status === "submitted"
             ? "bg-green-100 text-green-800"
             : "bg-red-100 text-red-800"
-        }`}>
+        }`}
+      >
         {status === "pending"
           ? "Chưa nộp"
           : status === "submitted"
@@ -84,14 +108,14 @@ export default function StudentDashboard() {
     {
       subject: "Toán học",
       teacher: "Nguyễn Văn A",
-      time: "8:00 - 9:30",
+      time: "19:50 - 20:35",
       room: "Phòng 101",
       status: "live",
     },
     {
       subject: "Văn học",
       teacher: "Trần Thị B",
-      time: "10:00 - 11:30",
+      time: "20:40 - 21:25",
       room: "Phòng 102",
       status: "upcoming",
     },
@@ -122,6 +146,61 @@ export default function StudentDashboard() {
       subject: "Tiếng Anh",
       dueDate: "20/12/2024",
       status: "overdue",
+    },
+  ];
+
+  // Thêm state cho modal xem chi tiết
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
+
+  // Hàm lấy ngày hiện tại dạng DD/MM/YYYY
+  function getTodayString(offset = 0) {
+    const now = new Date();
+    now.setDate(now.getDate() + offset);
+    return `${now.getDate().toString().padStart(2, "0")}/${(now.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}/${now.getFullYear()}`;
+  }
+
+  // Giả lập thời khóa biểu cho 3 ngày liên tiếp
+  const scheduleByDate = [
+    {
+      date: getTodayString(0),
+      classes: [
+        {
+          subject: "Toán học",
+          teacher: "Nguyễn Văn A",
+          time: "19:50 - 20:35",
+          room: "Phòng 101",
+        },
+        {
+          subject: "Văn học",
+          teacher: "Trần Thị B",
+          time: "20:40 - 21:25",
+          room: "Phòng 102",
+        },
+      ],
+    },
+    {
+      date: getTodayString(1),
+      classes: [
+        {
+          subject: "Tiếng Anh",
+          teacher: "Lê Văn C",
+          time: "14:00 - 15:30",
+          room: "Phòng 103",
+        },
+      ],
+    },
+    {
+      date: getTodayString(2),
+      classes: [
+        {
+          subject: "Tin học",
+          teacher: "Phạm Văn D",
+          time: "08:00 - 09:30",
+          room: "Phòng 104",
+        },
+      ],
     },
   ];
 
@@ -166,11 +245,17 @@ export default function StudentDashboard() {
           <div className="bg-white rounded-xl shadow-sm border border-gray-100">
             <div className="p-6 border-b border-gray-100">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900">
+                <h2 className="text-lg font-semibold text-gray-900 flex items-center">
                   Lớp học hôm nay
+                  <span className="ml-3 text-base font-semibold text-blue-900">
+                    {getTodayString()}
+                  </span>
                 </h2>
-                <button className="text-blue-600 text-sm font-medium hover:text-blue-700">
-                  Xem tất cả
+                <button
+                  className="text-blue-600 text-sm font-medium hover:text-blue-700"
+                  onClick={() => setShowScheduleModal(true)}
+                >
+                  Xem chi tiết
                 </button>
               </div>
             </div>
@@ -234,6 +319,48 @@ export default function StudentDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Modal xem chi tiết thời khóa biểu 3 ngày */}
+      {showScheduleModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <div className="bg-white rounded-xl shadow-lg p-6 min-w-[400px] max-w-lg w-full">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Thời khóa biểu từ hôm nay đến 2 ngày tiếp theo
+            </h3>
+            <div className="space-y-6">
+              {scheduleByDate.map((day, idx) => (
+                <div key={idx}>
+                  <p className="font-semibold text-blue-700 mb-2">
+                    {day.date}
+                  </p>
+                  {day.classes.length === 0 ? (
+                    <div className="text-gray-500 mb-2">Không có lớp học.</div>
+                  ) : (
+                    <div className="space-y-2">
+                      {day.classes.map((cls, i) => (
+                        <div key={i} className="p-3 rounded-lg border bg-gray-50">
+                          <div className="font-medium text-gray-900">{cls.subject}</div>
+                          <div className="text-sm text-gray-600">GV: {cls.teacher}</div>
+                          <div className="text-sm text-gray-600">Thời gian: {cls.time}</div>
+                          <div className="text-sm text-gray-600">Phòng: {cls.room}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-end mt-6">
+              <button
+                className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 hover:bg-gray-300"
+                onClick={() => setShowScheduleModal(false)}
+              >
+                Đóng
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
