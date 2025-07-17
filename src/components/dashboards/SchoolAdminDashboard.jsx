@@ -66,31 +66,23 @@ const ClassOverviewCard = ({
   </div>
 );
 
-// Dữ liệu mẫu cho biểu đồ
+// Dữ liệu mẫu cho biểu đồ điểm trung bình của 3 khối theo tháng
 const chartData = {
-  labels: [
-    "Tháng 1",
-    "Tháng 2",
-    "Tháng 3",
-    "Tháng 4",
-    "Tháng 5",
-    "Tháng 6",
-    "Tháng 7",
-  ],
+  labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6"],
   datasets: [
     {
-      label: "Lớp 10A1",
-      data: [7.8, 8.0, 8.2, 8.1, 8.3, 8.4, 8.2],
+      label: "Khối 10",
+      data: [8.0, 8.1, 8.2, 8.3, 8.2, 8.2],
       backgroundColor: "#3b82f6",
     },
     {
-      label: "Lớp 11B2",
-      data: [7.5, 7.7, 7.9, 8.0, 8.1, 8.0, 7.9],
+      label: "Khối 11",
+      data: [7.8, 7.9, 8.0, 7.9, 7.8, 7.9],
       backgroundColor: "#10b981",
     },
     {
-      label: "Lớp 12C3",
-      data: [8.0, 8.2, 8.3, 8.4, 8.5, 8.6, 8.5],
+      label: "Khối 12",
+      data: [8.3, 8.4, 8.5, 8.5, 8.6, 8.5],
       backgroundColor: "#f59e42",
     },
   ],
@@ -100,7 +92,7 @@ const chartOptions = {
   responsive: true,
   plugins: {
     legend: { position: "top" },
-    title: { display: true, text: "Điểm trung bình các lớp theo tháng" },
+    title: { display: true, text: "Điểm trung bình các khối theo tháng" },
   },
 };
 
@@ -187,8 +179,6 @@ export default function SchoolAdminDashboard() {
   const [selectedClass, setSelectedClass] = useState(classList[0].id);
   const [showModal, setShowModal] = useState(false);
   const [selectedGrade, setSelectedGrade] = useState(null);
-  const mainTimetableClasses = ["10A1", "11B2", "12C3"];
-  const [showOtherClasses, setShowOtherClasses] = useState(false);
 
   // Hàm lấy ngày hôm nay dạng DD/MM/YYYY
   function getTodayString() {
@@ -288,50 +278,21 @@ export default function SchoolAdminDashboard() {
                     {getTodayString()}
                   </span>
                 </h3>
-                <div className="flex space-x-2 mb-4">
-                  {mainTimetableClasses.map((clsId) => (
+                {/* Thanh cuộn ngang các lớp */}
+                <div className="flex space-x-2 mb-4 overflow-x-auto pb-2">
+                  {classList.map((cls) => (
                     <button
-                      key={clsId}
-                      className={`px-4 py-2 rounded-lg border ${
-                        selectedClass === clsId
+                      key={cls.id}
+                      className={`px-4 py-2 rounded-lg border whitespace-nowrap ${
+                        selectedClass === cls.id
                           ? "bg-blue-600 text-white"
                           : "bg-gray-50 text-gray-800"
                       }`}
-                      onClick={() => setSelectedClass(clsId)}
+                      onClick={() => setSelectedClass(cls.id)}
                     >
-                      {classList.find(c => c.id === clsId)?.name || clsId}
+                      {cls.name}
                     </button>
                   ))}
-                  <div className="relative">
-                    <button
-                      className="px-4 py-2 rounded-lg border bg-gray-100 text-gray-800"
-                      onClick={() => setShowOtherClasses(prev => !prev)}
-                    >
-                      Xem lớp khác
-                    </button>
-                    {showOtherClasses && (
-                      <div className="absolute left-0 mt-2 bg-white border rounded-lg shadow-lg z-10 min-w-[160px] max-h-60 overflow-y-auto">
-                        {classList
-                          .filter(cls => !mainTimetableClasses.includes(cls.id))
-                          .map(cls => (
-                            <button
-                              key={cls.id}
-                              className={`block w-full text-left px-4 py-2 hover:bg-blue-50 ${
-                                selectedClass === cls.id
-                                  ? "bg-blue-600 text-white"
-                                  : "bg-white text-gray-800"
-                              }`}
-                              onClick={() => {
-                                setSelectedClass(cls.id);
-                                setShowOtherClasses(false);
-                              }}
-                            >
-                              {cls.name}
-                            </button>
-                          ))}
-                      </div>
-                    )}
-                  </div>
                 </div>
                 <div className="space-y-3">
                   {(timetable[selectedClass] || []).map((item, idx) => {
