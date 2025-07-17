@@ -85,10 +85,10 @@ const AssignmentCard = ({ title, subject, dueDate, status }) => (
         }`}
       >
         {status === "pending"
-          ? "Chưa nộp"
+          ? "Chưa hoàn thành"
           : status === "submitted"
-          ? "Đã nộp"
-          : "Quá hạn"}
+          ? "Đã hoàn thành"
+          : "Quá hạn nộp"}
       </span>
     </div>
     <div className="space-y-1 text-sm text-gray-600">
