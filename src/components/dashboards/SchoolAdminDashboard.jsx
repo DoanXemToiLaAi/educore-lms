@@ -36,12 +36,11 @@ const StatCard = ({ icon: Icon, title, value, change, color }) => (
 
 const getIconClass = (Icon) => {
   if (Icon === UserCheck) return 'bx-user-check';
-  if (Icon === GraduationCap) return 'bx-graduation';
+  if (Icon === GraduationCap) return 'bi bi-mortarboard';
   if (Icon === Users) return 'bx-group';
   if (Icon === BarChart3) return 'bx-bar-chart-alt-2';
   return 'bx-home';
 };
-
 const ClassOverviewCard = ({
   grade,
   totalClasses,
