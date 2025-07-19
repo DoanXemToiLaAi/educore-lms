@@ -57,7 +57,7 @@ export default function Header({ currentPage = "" }) {
     { path: "/", label: language === "vi" ? "Trang chủ" : "Home", key: "home" },
     {
       path: "/features",
-      label: language === "vi" ? "Tính năng" : "Features",
+      label: language === "vi" ? "Blog" : "Blog",
       key: "features",
     },
     {

@@ -12,7 +12,7 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
 import ComponentsShowcase from "./pages/ComponentsShowcase";
-import FeaturesPage from "./pages/FeaturesPage";
+import FeaturesPage from "./pages/BlogPage";
 import PricingPage from "./pages/PricingPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";

@@ -21,11 +21,12 @@ export default function FeaturesPage() {
         <div className="space-y-12">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-              Tính năng nổi bật
+              Blog
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400">
-              Khám phá các tính năng đột phá giúp nâng cao hiệu quả quản lý và
-              học tập
+              Chào mừng bạn đến với trang blog của chúng tôi! Tại đây, bạn sẽ
+              tìm thấy những bài viết thú vị và hữu ích về các chủ đề khác nhau.
+              Hãy cùng khám phá và chia sẻ ý kiến của bạn nhé!
             </p>
           </div>
 

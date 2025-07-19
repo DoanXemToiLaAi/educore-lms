@@ -20,7 +20,7 @@ export default function PricingPage() {
           </button>
 
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8">
-            Bảng giá dịch vụ
+            Bảng giá dịch vụ và tính năng
           </h1>
           {/* Thêm nội dung trang Pricing ở đây */}
         </div>

@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 import Sidebar from "../components/common/Sidebar";
 import TopBar from "../components/common/TopBar";
 import DashboardContent from "../components/dashboards/DashboardContent";
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const { theme, setTheme } = useTheme();
   const [sidebarPosition, setSidebarPosition] = useState("left");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
 
   if (!user) return null;
 
@@ -18,6 +24,8 @@ export default function Dashboard() {
         setSidebarPosition={setSidebarPosition}
         isSidebarCollapsed={isSidebarCollapsed}
         setIsSidebarCollapsed={setIsSidebarCollapsed}
+        theme={theme}
+        setTheme={setTheme}
       />
 
       <div

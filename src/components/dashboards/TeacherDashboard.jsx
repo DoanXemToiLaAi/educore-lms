@@ -8,12 +8,20 @@ import {
 } from "lucide-react";
 
 const StatCard = ({ icon: Icon, title, value, subtitle, color }) => (
-  <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+  <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
     <div className="flex items-center justify-between">
       <div>
-        <p className="text-sm font-medium text-gray-600">{title}</p>
-        <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
-        {subtitle && <p className="text-sm text-gray-500 mt-1">{subtitle}</p>}
+        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+          {title}
+        </p>
+        <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+          {value}
+        </p>
+        {subtitle && (
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            {subtitle}
+          </p>
+        )}
       </div>
       <div className={`p-3 rounded-lg ${color}`}>
         <Icon className="h-6 w-6 text-white" />
@@ -23,19 +31,29 @@ const StatCard = ({ icon: Icon, title, value, subtitle, color }) => (
 );
 
 const ClassCard = ({ className, students, subject, schedule, progress }) => (
-  <div className="bg-white p-4 rounded-lg border border-gray-200 hover:shadow-md transition-shadow">
+  <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
     <div className="flex items-center justify-between mb-3">
-      <h3 className="font-semibold text-gray-900">{className}</h3>
-      <span className="text-sm text-gray-500">{students} học sinh</span>
+      <h3 className="font-semibold text-gray-900 dark:text-white">
+        {className}
+      </h3>
+      <span className="text-sm text-gray-500 dark:text-gray-400">
+        {students} học sinh
+      </span>
     </div>
     <div className="space-y-2">
-      <p className="text-sm text-gray-600">Môn: {subject}</p>
-      <p className="text-sm text-gray-600">Lịch: {schedule}</p>
+      <p className="text-sm text-gray-600 dark:text-gray-400">Môn: {subject}</p>
+      <p className="text-sm text-gray-600 dark:text-gray-400">
+        Lịch: {schedule}
+      </p>
       <div className="flex items-center justify-between">
-        <span className="text-sm text-gray-600">Tiến độ:</span>
-        <span className="text-sm font-medium text-blue-600">{progress}%</span>
+        <span className="text-sm text-gray-600 dark:text-gray-400">
+          Tiến độ:
+        </span>
+        <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
+          {progress}%
+        </span>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2">
+      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
         <div
           className="bg-blue-600 h-2 rounded-full transition-all duration-300"
           style={{ width: `${progress}%` }}></div>
@@ -45,7 +63,7 @@ const ClassCard = ({ className, students, subject, schedule, progress }) => (
       <button className="flex-1 bg-blue-600 text-white py-2 px-3 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
         Vào lớp
       </button>
-      <button className="flex-1 border border-gray-300 text-gray-700 py-2 px-3 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
+      <button className="flex-1 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-2 px-3 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
         Quản lý
       </button>
     </div>
@@ -53,7 +71,7 @@ const ClassCard = ({ className, students, subject, schedule, progress }) => (
 );
 
 const RecentActivityCard = ({ type, title, time, status }) => (
-  <div className="flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+  <div className="flex items-center space-x-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors">
     <div
       className={`p-2 rounded-lg ${
         type === "assignment"
@@ -71,8 +89,10 @@ const RecentActivityCard = ({ type, title, time, status }) => (
       )}
     </div>
     <div className="flex-1">
-      <p className="text-sm font-medium text-gray-900">{title}</p>
-      <p className="text-xs text-gray-500">{time}</p>
+      <p className="text-sm font-medium text-gray-900 dark:text-white">
+        {title}
+      </p>
+      <p className="text-xs text-gray-500 dark:text-gray-400">{time}</p>
     </div>
     <span
       className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -147,10 +167,10 @@ export default function TeacherDashboard() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
           Dashboard Giáo viên
         </h1>
-        <p className="text-gray-600 mt-1">
+        <p className="text-gray-600 dark:text-gray-400 mt-1">
           Quản lý lớp học và theo dõi tiến độ học tập của học sinh
         </p>
       </div>
@@ -191,10 +211,10 @@ export default function TeacherDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* My Classes */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-            <div className="p-6 border-b border-gray-100">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <div className="p-6 border-b border-gray-100 dark:border-gray-700">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                   Lớp học của tôi
                 </h2>
                 <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
@@ -215,9 +235,9 @@ export default function TeacherDashboard() {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Quick Actions */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-            <div className="p-6 border-b border-gray-100">
-              <h2 className="text-lg font-semibold text-gray-900">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <div className="p-6 border-b border-gray-100 dark:border-gray-700">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Thao tác nhanh
               </h2>
             </div>
@@ -226,11 +246,11 @@ export default function TeacherDashboard() {
                 <ClipboardList className="h-4 w-4 mr-2" />
                 Tạo bài kiểm tra
               </button>
-              <button className="w-full border border-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center justify-center">
+              <button className="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-3 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-center">
                 <BookOpen className="h-4 w-4 mr-2" />
                 Tạo bài giảng
               </button>
-              <button className="w-full border border-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center justify-center">
+              <button className="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-3 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-center">
                 <MessageSquare className="h-4 w-4 mr-2" />
                 Gửi thông báo
               </button>
@@ -238,9 +258,9 @@ export default function TeacherDashboard() {
           </div>
 
           {/* Recent Activities */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-            <div className="p-6 border-b border-gray-100">
-              <h2 className="text-lg font-semibold text-gray-900">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <div className="p-6 border-b border-gray-100 dark:border-gray-700">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Hoạt động gần đây
               </h2>
             </div>
