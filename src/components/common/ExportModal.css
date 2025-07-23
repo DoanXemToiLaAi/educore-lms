@@ -1,0 +1,454 @@
+/* Export Modal Styles */
+.export-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(4px);
+}
+
+.export-modal {
+  background: var(--light);
+  border-radius: 20px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.export-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 24px 0 24px;
+  border-bottom: 1px solid var(--grey);
+  margin-bottom: 24px;
+}
+
+.export-modal-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.export-modal-header h2 i {
+  font-size: 1.8rem;
+  color: var(--primary);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--dark-grey);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background: var(--grey);
+  color: var(--dark);
+}
+
+.export-modal-body {
+  padding: 0 24px 24px 24px;
+}
+
+.export-section {
+  margin-bottom: 32px;
+}
+
+.export-section h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Format Options */
+.format-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.format-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px;
+  border: 2px solid var(--grey);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--light);
+  position: relative;
+}
+
+.format-option input[type="radio"] {
+  display: none;
+}
+
+.format-option i {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  color: var(--dark-grey);
+  transition: color 0.3s ease;
+}
+
+.format-option span {
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+
+.format-option small {
+  color: var(--dark-grey);
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.format-option:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.1);
+}
+
+.format-option.active {
+  border-color: var(--primary);
+  background: var(--light-primary);
+}
+
+.format-option.active i {
+  color: var(--primary);
+}
+
+/* Report Types */
+.report-types {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.report-type {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px;
+  border: 2px solid var(--grey);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--light);
+}
+
+.report-type input[type="radio"] {
+  margin-right: 16px;
+  margin-top: 2px;
+  transform: scale(1.2);
+  accent-color: var(--primary);
+}
+
+.report-type-content h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin: 0 0 4px 0;
+}
+
+.report-type-content p {
+  font-size: 0.9rem;
+  color: var(--dark-grey);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.report-type:hover {
+  border-color: var(--primary);
+  background: var(--light-primary);
+}
+
+.report-type.active {
+  border-color: var(--primary);
+  background: var(--light-primary);
+}
+
+/* Date Options */
+.date-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.date-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border: 2px solid var(--grey);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--light);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.date-option input[type="radio"] {
+  display: none;
+}
+
+.date-option:hover {
+  border-color: var(--primary);
+  background: var(--light-primary);
+}
+
+.date-option.active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--light);
+}
+
+/* Custom Date Range */
+.custom-date-range {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 16px;
+  background: var(--grey);
+  border-radius: 8px;
+}
+
+.date-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.date-input label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--dark);
+}
+
+.date-input input[type="date"] {
+  padding: 10px 12px;
+  border: 1px solid var(--grey);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: var(--light);
+  color: var(--dark);
+}
+
+.date-input input[type="date"]:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+}
+
+/* Preview Section */
+.export-preview {
+  background: var(--grey);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.preview-info {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+}
+
+.preview-info i {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-top: 2px;
+}
+
+.preview-info p {
+  margin: 0 0 4px 0;
+  font-size: 0.9rem;
+  color: var(--dark);
+}
+
+.estimated-size {
+  color: var(--dark-grey);
+}
+
+/* Progress Bar */
+.export-progress {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--light-primary);
+  border-radius: 8px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--grey);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  animation: progressPulse 1.5s infinite;
+}
+
+@keyframes progressPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Modal Footer */
+.export-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 0 24px 24px 24px;
+  border-top: 1px solid var(--grey);
+  margin-top: 24px;
+  padding-top: 24px;
+}
+
+.btn-secondary, .btn-primary {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.btn-secondary {
+  background: var(--grey);
+  color: var(--dark);
+}
+
+.btn-secondary:hover {
+  background: var(--dark-grey);
+  color: var(--light);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--light);
+}
+
+.btn-primary:hover {
+  background: #1e40af;
+}
+
+.btn-primary:disabled, .btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary:disabled:hover {
+  background: var(--primary);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .export-modal {
+    width: 95%;
+    margin: 20px;
+  }
+  
+  .format-options {
+    grid-template-columns: 1fr;
+  }
+  
+  .date-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .custom-date-range {
+    grid-template-columns: 1fr;
+  }
+  
+  .export-preview {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .export-modal-footer {
+    flex-direction: column;
+  }
+  
+  .btn-secondary, .btn-primary {
+    width: 100%;
+  }
+}
+
+/* Dark mode support */
+body.dark .export-modal {
+  background: var(--dark);
+}
+
+body.dark .format-option,
+body.dark .report-type,
+body.dark .date-option {
+  background: var(--grey);
+}
+
+body.dark .custom-date-range,
+body.dark .export-preview {
+  background: var(--dark);
+}
+
+body.dark .date-input input[type="date"] {
+  background: var(--grey);
+  color: var(--light);
+}

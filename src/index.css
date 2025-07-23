@@ -2,6 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "./assets/styles/animations.css";
+@import "./assets/styles/forms.css";
+@import "./assets/styles/darkMode.css";
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  /* Áp dụng màu nền và màu chữ mặc định cho toàn bộ tài liệu */
+  body {
+    @apply bg-white text-gray-900 transition-colors duration-300;
+  }
+
+  /* Áp dụng màu dark mode cho toàn bộ tài liệu */
+  html.dark body {
+    @apply bg-gray-950 text-gray-100;
+  }
+
+  /* Animation cho chuyển đổi ngôn ngữ */
+  .language-transition {
+    animation: language-fade 0.5s ease;
+  }
+
+  /* Animation cho chuyển đổi theme - Áp dụng cho tất cả phần tử */
+  * {
+    transition-property: color, background-color, border-color,
+      text-decoration-color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+  }
+
+  /* Đảm bảo tất cả section đều áp dụng theme */
+  section,
+  div,
+  article,
+  aside,
+  header,
+  footer,
+  nav {
+    @apply transition-colors duration-300;
+  }
+
+  /* Đảm bảo các card, container đều áp dụng theme */
+  .card,
+  .container,
+  .wrapper,
+  [class*="bg-"] {
+    @apply transition-colors duration-300;
+  }
+
+  @keyframes language-fade {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",

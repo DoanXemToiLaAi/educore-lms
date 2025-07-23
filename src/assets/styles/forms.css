@@ -1,0 +1,31 @@
+/* 
+ * Form component styles with dark mode support
+ * This file contains styles for form elements across the application
+ */
+
+/* Form input dark mode styles */
+.form-input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+select,
+textarea {
+  @apply bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 dark:text-gray-100;
+}
+
+/* Form label dark mode styles */
+.form-label {
+  @apply text-gray-700 dark:text-gray-300;
+}
+
+/* Form button dark mode styles */
+.form-button {
+  @apply transition-colors;
+}
+
+/* Form container dark mode styles */
+.form-container {
+  @apply bg-white dark:bg-gray-800 dark:border-gray-700;
+}
