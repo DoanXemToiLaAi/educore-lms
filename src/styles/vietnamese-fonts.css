@@ -1,0 +1,106 @@
+/* 
+ * GIẢI PHÁP 1: TỐI ƯU FONT TIẾNG VIỆT
+ * File CSS chuyên dụng cho font tiếng Việt
+ */
+
+/* Import Google Fonts hỗ trợ tiếng Việt tốt */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;500;600;700&display=swap');
+
+/* Định nghĩa font stack tối ưu cho tiếng Việt */
+:root {
+  /* Font chính - ưu tiên web fonts hỗ trợ tiếng Việt */
+  --font-primary: 'Inter', 'Nunito Sans', 'Source Sans Pro', 
+                  /* System fonts hỗ trợ tiếng Việt tốt */
+                  'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial Unicode MS',
+                  /* Fallback cho Windows */
+                  'Tahoma', 'Microsoft Sans Serif',
+                  /* Fallback cho macOS */
+                  'SF Pro Display', 'SF Pro Text',
+                  /* Fallback cuối cùng */
+                  sans-serif;
+
+  /* Font cho heading - có thể sử dụng font khác */
+  --font-heading: 'Inter', 'Nunito Sans', 
+                  'Segoe UI', 'Roboto', 'Helvetica Neue',
+                  'Arial Unicode MS', 'Tahoma',
+                  sans-serif;
+
+  /* Font monospace cho code */
+  --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono',
+               'Consolas', 'Courier New', monospace;
+}
+
+/* Áp dụng font cho toàn bộ trang */
+* {
+  font-family: var(--font-primary);
+  /* Cải thiện rendering font */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Font cho các heading */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+/* Font cho code blocks */
+code, pre, .code {
+  font-family: var(--font-mono);
+}
+
+/* Tối ưu cho các ký tự tiếng Việt đặc biệt */
+.vietnamese-text {
+  font-family: var(--font-primary);
+  /* Đảm bảo line-height phù hợp với dấu thanh */
+  line-height: 1.6;
+  /* Tăng letter-spacing nhẹ để dấu thanh không bị chồng lấn */
+  letter-spacing: 0.01em;
+}
+
+/* Class để test font rendering */
+.font-test {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.font-test h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+/* Responsive font sizes */
+@media (max-width: 768px) {
+  :root {
+    font-size: 14px;
+  }
+  
+  .vietnamese-text {
+    line-height: 1.7; /* Tăng line-height trên mobile */
+  }
+}
+
+/* Fallback cho trường hợp font không load được */
+@font-face {
+  font-family: 'Fallback-Vietnamese';
+  src: local('Segoe UI'), local('Roboto'), local('Arial Unicode MS');
+  font-display: swap;
+}
+
+/* Critical CSS cho font loading */
+.font-loading {
+  font-family: 'Segoe UI', 'Roboto', 'Arial Unicode MS', sans-serif;
+  visibility: hidden;
+}
+
+.font-loaded {
+  font-family: var(--font-primary);
+  visibility: visible;
+}
