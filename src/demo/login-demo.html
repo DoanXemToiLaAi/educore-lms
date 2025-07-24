@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Demo - EduCore</title>
+    <link rel="stylesheet" href="../styles/vietnamese-fonts.css">
+    <link rel="stylesheet" href="../styles/login-form.css">
+</head>
+<body class="font-loading">
+    <!-- Login Form Container -->
+    <div id="loginFormContainer"></div>
+
+    <!-- Demo API Response Simulator -->
+    <div id="apiSimulator" style="position: fixed; top: 20px; left: 20px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1000; max-width: 300px;">
+        <h4>🔧 API Simulator</h4>
+        <div style="margin: 10px 0;">
+            <label>
+                <input type="radio" name="apiResponse" value="success" checked> 
+                Success Response
+            </label>
+        </div>
+        <div style="margin: 10px 0;">
+            <label>
+                <input type="radio" name="apiResponse" value="error"> 
+                Error Response
+            </label>
+        </div>
+        <div style="margin: 10px 0;">
+            <label>
+                <input type="radio" name="apiResponse" value="invalid"> 
+                Invalid Response
+            </label>
+        </div>
+        <div style="margin: 10px 0;">
+            <select id="roleSelector">
+                <option value="SystemAdmin">System Admin</option>
+                <option value="SchoolAdmin" selected>School Admin</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Student">Student</option>
+                <option value="Parent">Parent</option>
+            </select>
+        </div>
+        <button onclick="toggleSimulator()" style="width: 100%; padding: 5px; margin-top: 10px;">Hide</button>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module">
+        import authManager from '../utils/authManager.js';
+        import LoginForm from '../components/LoginForm.js';
+        
+        // Mock API responses
+        const mockResponses = {
+            success: {
+                "status": "success",
+                "code": 200,
+                "message": "Đăng nhập thành công",
+                "metadata": {
+                    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+                    "user": {
+                        "email": "khang14@mailnesia.com",
+                        "role": "SchoolAdmin"
+                    }
+                }
+            },
+            error: {
+                "status": "error",
+                "code": 401,
+                "message": "Email hoặc mật khẩu không đúng"
+            },
+            invalid: {
+                "status": "success",
+                "code": 200
+                // Missing metadata
+            }
+        };
+
+        // Override fetch để simulate API
+        const originalFetch = window.fetch;
+        window.fetch = async (url, options) => {
+            if (url.includes('/api/auth/login')) {
+                // Simulate network delay
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                const responseType = document.querySelector('input[name="apiResponse"]:checked').value;
+                const selectedRole = document.getElementById('roleSelector').value;
+                
+                let mockResponse = { ...mockResponses[responseType] };
+                
+                // Update role in success response
+                if (responseType === 'success' && mockResponse.metadata) {
+                    mockResponse.metadata.user.role = selectedRole;
+                }
+                
+                if (responseType === 'error') {
+                    return {
+                        ok: false,
+                        status: 401,
+                        json: async () => mockResponse
+                    };
+                }
+                
+                return {
+                    ok: true,
+                    status: 200,
+                    json: async () => mockResponse
+                };
+            }
+            
+            return originalFetch(url, options);
+        };
+
+        // Initialize login form
+        document.addEventListener('DOMContentLoaded', () => {
+            new LoginForm('loginFormContainer');
+        });
+
+        // Simulator controls
+        window.toggleSimulator = function() {
+            const simulator = document.getElementById('apiSimulator');
+            if (simulator.style.display === 'none') {
+                simulator.style.display = 'block';
+            } else {
+                simulator.style.display = 'none';
+            }
+        };
+
+        // Demo functions for testing
+        window.testLogin = async function(email, password, role) {
+            try {
+                const mockResponse = {
+                    ...mockResponses.success,
+                    metadata: {
+                        ...mockResponses.success.metadata,
+                        user: { email, role }
+                    }
+                };
+                
+                const result = await authManager.handleLoginResponse(mockResponse);
+                console.log('✅ Test login result:', result);
+                return result;
+            } catch (error) {
+                console.error('❌ Test login error:', error);
+                throw error;
+            }
+        };
+
+        window.testLogout = function() {
+            authManager.logout();
+        };
+
+        window.checkAuth = function() {
+            console.log('🔍 Auth Status:', {
+                isAuthenticated: authManager.isAuthenticated(),
+                user: authManager.getCurrentUser(),
+                token: authManager.getAccessToken() ? 'Present' : 'Missing'
+            });
+        };
+
+        // Add demo buttons
+        setTimeout(() => {
+            const demoButtons = document.createElement('div');
+            demoButtons.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                background: white;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1000;
+            `;
+            demoButtons.innerHTML = `
+                <h4>🧪 Demo Functions</h4>
+                <button onclick="testLogin('demo@educore.vn', '123456', 'Teacher')" style="display: block; width: 100%; margin: 5px 0; padding: 5px;">Test Login</button>
+                <button onclick="checkAuth()" style="display: block; width: 100%; margin: 5px 0; padding: 5px;">Check Auth</button>
+                <button onclick="testLogout()" style="display: block; width: 100%; margin: 5px 0; padding: 5px;">Test Logout</button>
+            `;
+            document.body.appendChild(demoButtons);
+        }, 1000);
+    </script>
+</body>
+</html>

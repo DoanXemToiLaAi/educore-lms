@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Font Test - Tiếng Việt</title>
+    <link rel="stylesheet" href="../styles/vietnamese-fonts.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+            font-family: var(--font-primary);
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .test-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        .font-sample {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        
+        .font-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .sample-text {
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        
+        .size-16 { font-size: 16px; }
+        .size-18 { font-size: 18px; }
+        .size-20 { font-size: 20px; }
+        .size-24 { font-size: 24px; }
+        
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+        
+        .controls button {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .controls button:hover {
+            background: #f0f0f0;
+        }
+        
+        .controls button.active {
+            background: #007cba;
+            color: white;
+        }
+    </style>
+</head>
+<body class="font-loading">
+    <div class="controls">
+        <button onclick="toggleFontTest()">Toggle Font Test UI</button>
+        <button onclick="testAllFonts()">Test All Fonts</button>
+        <button onclick="applyBestFont()">Apply Best Font</button>
+    </div>
+
+    <div class="test-container">
+        <div class="test-header">
+            <h1>🔤 Font Test - Tiếng Việt</h1>
+            <p>Kiểm tra hiển thị font tiếng Việt trên các font khác nhau</p>
+        </div>
+
+        <!-- Test String -->
+        <div class="font-sample">
+            <div class="font-name">Chuỗi test tiếng Việt:</div>
+            <div class="sample-text">
+                <strong>Tất cả các dấu thanh:</strong><br>
+                áàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ<br>
+                ÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐ
+            </div>
+        </div>
+
+        <!-- Inter Font Test -->
+        <div class="font-sample" style="font-family: 'Inter', sans-serif;">
+            <div class="font-name">Inter Font</div>
+            <div class="sample-text size-16">
+                <strong>16px:</strong> Chào mừng bạn đến với hệ thống quản lý học tập EduCore. Đây là một nền tảng giáo dục hiện đại với đầy đủ các tính năng hỗ trợ việc dạy và học trực tuyến.
+            </div>
+            <div class="sample-text size-18">
+                <strong>18px:</strong> Các tính năng chính bao gồm: quản lý lớp học, tạo bài kiểm tra, theo dõi tiến độ học tập, và hệ thống báo cáo chi tiết.
+            </div>
+            <div class="sample-text size-20">
+                <strong>20px:</strong> Hệ thống hỗ trợ đầy đủ tiếng Việt với các dấu thanh: ắ ằ ẳ ẵ ặ ấ ầ ẩ ẫ ậ ế ề ể ễ ệ ố ồ ổ ỗ ộ ớ ờ ở ỡ ợ ứ ừ ử ữ ự
+            </div>
+        </div>
+
+        <!-- Nunito Sans Font Test -->
+        <div class="font-sample" style="font-family: 'Nunito Sans', sans-serif;">
+            <div class="font-name">Nunito Sans Font</div>
+            <div class="sample-text size-16">
+                <strong>16px:</strong> Giáo dục là nền tảng của sự phát triển. Với công nghệ hiện đại, chúng ta có thể mang đến trải nghiệm học tập tốt nhất cho học sinh.
+            </div>
+            <div class="sample-text size-18">
+                <strong>18px:</strong> Các môn học được hỗ trợ: Toán học, Văn học, Tiếng Anh, Vật lý, Hóa học, Sinh học, Lịch sử, Địa lý.
+            </div>
+            <div class="sample-text size-20">
+                <strong>20px:</strong> Đặc biệt chú ý đến các từ có dấu: quý, quyền, quyết, nghiêm, nghiệp, thiện, thiết, xuất, nhập.
+            </div>
+        </div>
+
+        <!-- Source Sans Pro Font Test -->
+        <div class="font-sample" style="font-family: 'Source Sans Pro', sans-serif;">
+            <div class="font-name">Source Sans Pro Font</div>
+            <div class="sample-text size-16">
+                <strong>16px:</strong> Nền tảng EduCore được thiết kế để phục vụ tất cả các cấp học từ tiểu học đến trung học phổ thông.
+            </div>
+            <div class="sample-text size-18">
+                <strong>18px:</strong> Tính năng nổi bật: AI Tutor thông minh, Voice-over cho bài giảng, Camera 360 độ, cá nhân hóa lộ trình học.
+            </div>
+            <div class="sample-text size-20">
+                <strong>20px:</strong> Kiểm tra dấu thanh đặc biệt: uyển, uyển chuyển,uyển thông, quyền, quyền lực, quyền hạn.
+            </div>
+        </div>
+
+        <!-- System Fonts Test -->
+        <div class="font-sample" style="font-family: 'Segoe UI', sans-serif;">
+            <div class="font-name">Segoe UI (Windows System Font)</div>
+            <div class="sample-text size-16">
+                <strong>16px:</strong> Font hệ thống Windows với hỗ trợ tiếng Việt tốt. Thường được sử dụng làm fallback font.
+            </div>
+            <div class="sample-text size-18">
+                <strong>18px:</strong> Test các ký tự đặc biệt: ₫ (đồng Việt Nam), ™ (trademark), © (copyright), ® (registered).
+            </div>
+        </div>
+
+        <div class="font-sample" style="font-family: 'Roboto', sans-serif;">
+            <div class="font-name">Roboto (Android System Font)</div>
+            <div class="sample-text size-16">
+                <strong>16px:</strong> Font hệ thống Android, được Google phát triển với hỗ trợ đa ngôn ngữ tốt.
+            </div>
+            <div class="sample-text size-18">
+                <strong>18px:</strong> Kiểm tra độ rõ nét của các dấu thanh: ẩm, ẩm thực, ẩm ướt, ẩm mốc.
+            </div>
+        </div>
+
+        <!-- Fallback Test -->
+        <div class="font-sample" style="font-family: 'NonExistentFont', 'Arial Unicode MS', sans-serif;">
+            <div class="font-name">Fallback Font Test (Arial Unicode MS)</div>
+            <div class="sample-text size-16">
+                <strong>16px:</strong> Đây là test fallback font khi font chính không tải được. Sử dụng Arial Unicode MS.
+            </div>
+            <div class="sample-text size-18">
+                <strong>18px:</strong> Các ký tự phức tạp: ẵ, ặ, ẫ, ậ, ễ, ệ, ỗ, ộ, ỡ, ợ, ữ, ự, ỹ, ỵ.
+            </div>
+        </div>
+
+        <!-- Performance Test -->
+        <div class="font-sample">
+            <div class="font-name">Performance & Loading Test</div>
+            <div id="loadingTest" class="sample-text">
+                <p>⏳ Đang kiểm tra tốc độ load font...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../utils/fontLoader.js"></script>
+    <script>
+        // Test functions
+        async function testAllFonts() {
+            const fontLoader = new VietnameseFontLoader();
+            const results = [];
+            
+            for (const font of fontLoader.fonts) {
+                const startTime = performance.now();
+                const isSupported = await fontLoader.checkFontSupport(font);
+                const loadTime = performance.now() - startTime;
+                
+                results.push({
+                    font,
+                    supported: isSupported,
+                    loadTime: Math.round(loadTime * 100) / 100
+                });
+            }
+            
+            console.table(results);
+            
+            // Update loading test display
+            const loadingTest = document.getElementById('loadingTest');
+            loadingTest.innerHTML = `
+                <h4>Kết quả test font:</h4>
+                ${results.map(r => `
+                    <div style="margin: 5px 0; padding: 8px; background: ${r.supported ? '#e8f5e8' : '#ffe8e8'}; border-radius: 4px;">
+                        <strong>${r.font}:</strong> 
+                        ${r.supported ? '✅ Hỗ trợ' : '❌ Không hỗ trợ'} 
+                        (${r.loadTime}ms)
+                    </div>
+                `).join('')}
+            `;
+        }
+        
+        async function applyBestFont() {
+            const fontLoader = new VietnameseFontLoader();
+            const bestFont = await fontLoader.applyBestFont();
+            alert(`✅ Đã áp dụng font tốt nhất: ${bestFont}`);
+        }
+        
+        function toggleFontTest() {
+            const fontLoader = new VietnameseFontLoader();
+            fontLoader.createFontTestUI();
+        }
+        
+        // Auto test when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(testAllFonts, 1000);
+        });
+    </script>
+</body>
+</html>
