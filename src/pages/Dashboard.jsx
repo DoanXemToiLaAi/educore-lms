@@ -92,16 +92,18 @@ function Dashboard() {
   if (!user) return null;
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--grey)" }}>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Sidebar
         isCollapsed={isSidebarCollapsed}
         activeMenu={activeMenuIndex}
         onMenuClick={handleSidebarMenuClick}
         role={user.role}
       />
-      <div className="content">
-        {/* TopBar fixed trên cùng, không bị tràn */}
-        <div style={{ position: "sticky", top: 0, zIndex: 1001 }}>
+      <div className={`transition-all duration-300 
+        ${isSidebarCollapsed ? "lg:ml-16" : "lg:ml-64"}
+      `}>
+        {/* TopBar fixed trên cùng */}
+        <div className="sticky top-0 z-40">
           <TopBar
             isSidebarCollapsed={isSidebarCollapsed}
             setIsSidebarCollapsed={setIsSidebarCollapsed}
@@ -111,8 +113,8 @@ function Dashboard() {
             setIsDarkTheme={setIsDarkTheme}
           />
         </div>
-        {/* Main content padding-top để không bị topbar che */}
-        <main style={{ padding: 24, paddingTop: 40 }}>
+        {/* Main content */}
+        <main className="p-4 pt-6 lg:p-6 lg:pt-8">
           <DashboardContent />
         </main>
       </div>
