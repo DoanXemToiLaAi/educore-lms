@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  Users,
-  GraduationCap,
-  BarChart3,
-  UserCheck,
-} from "lucide-react";
+import { Users, GraduationCap, BarChart3, UserCheck } from "lucide-react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -15,19 +10,33 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const StatCard = ({ icon: Icon, title, value, change, color }) => (
   <li className="p-6 bg-white dark:bg-gray-800 rounded-2xl flex items-center gap-6 cursor-pointer relative shadow-sm">
-    <i className={`bx ${getIconClass(Icon)} text-blue-600 text-3xl w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center`}></i>
+    <i
+      className={`bx ${getIconClass(
+        Icon
+      )} text-blue-600 text-3xl w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center`}></i>
     <div className="flex-1">
-      <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-2">{value}</h3>
+      <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+        {value}
+      </h3>
       <p className="text-gray-600 dark:text-gray-400 text-sm m-0">{title}</p>
       {change && (
-        <span className={`absolute bottom-2 right-4 text-xs font-medium ${
-          change.positive ? 'text-green-600' : 'text-red-600'
-        }`}>
-          {change.positive ? "+" : ""}{change.value}% so với tháng trước
+        <span
+          className={`absolute bottom-2 right-4 text-xs font-medium ${
+            change.positive ? "text-green-600" : "text-red-600"
+          }`}>
+          {change.positive ? "+" : ""}
+          {change.value}% so với tháng trước
         </span>
       )}
     </div>
@@ -35,11 +44,11 @@ const StatCard = ({ icon: Icon, title, value, change, color }) => (
 );
 
 const getIconClass = (Icon) => {
-  if (Icon === UserCheck) return 'bx-user-check';
-  if (Icon === GraduationCap) return 'bi bi-mortarboard';
-  if (Icon === Users) return 'bx-group';
-  if (Icon === BarChart3) return 'bx-bar-chart-alt-2';
-  return 'bx-home';
+  if (Icon === UserCheck) return "bx-user-check";
+  if (Icon === GraduationCap) return "bi bi-mortarboard";
+  if (Icon === Users) return "bx-group";
+  if (Icon === BarChart3) return "bx-bar-chart-alt-2";
+  return "bx-home";
 };
 const ClassOverviewCard = ({
   grade,
@@ -49,13 +58,19 @@ const ClassOverviewCard = ({
 }) => (
   <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-xl border border-gray-200 dark:border-gray-600">
     <div className="flex items-center justify-between mb-3">
-      <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 m-0">Khối {grade}</h3>
-      <span className="text-sm text-gray-600 dark:text-gray-400">{totalClasses} lớp</span>
+      <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 m-0">
+        Khối {grade}
+      </h3>
+      <span className="text-sm text-gray-600 dark:text-gray-400">
+        {totalClasses} lớp
+      </span>
     </div>
     <div className="space-y-2">
       <div className="flex justify-between items-center text-sm">
         <span className="text-gray-600 dark:text-gray-400">Học sinh:</span>
-        <span className="font-semibold text-gray-800 dark:text-gray-200">{totalStudents}</span>
+        <span className="font-semibold text-gray-800 dark:text-gray-200">
+          {totalStudents}
+        </span>
       </div>
       <div className="flex justify-between items-center text-sm">
         <span className="text-gray-600 dark:text-gray-400">Điểm TB:</span>
@@ -68,8 +83,18 @@ const ClassOverviewCard = ({
 // Dữ liệu mẫu cho biểu đồ điểm trung bình của 3 khối theo tháng
 const chartData = {
   labels: [
-    "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
-    "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+    "Tháng 1",
+    "Tháng 2",
+    "Tháng 3",
+    "Tháng 4",
+    "Tháng 5",
+    "Tháng 6",
+    "Tháng 7",
+    "Tháng 8",
+    "Tháng 9",
+    "Tháng 10",
+    "Tháng 11",
+    "Tháng 12",
   ],
   datasets: [
     {
@@ -196,8 +221,20 @@ export default function SchoolAdminDashboard() {
     const now = new Date();
     const [startH, startM] = start.split(":").map(Number);
     const [endH, endM] = end.split(":").map(Number);
-    const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), startH, startM);
-    const endTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), endH, endM);
+    const startTime = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      startH,
+      startM
+    );
+    const endTime = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      endH,
+      endM
+    );
 
     if (now >= startTime && now <= endTime) return "current";
     if (now < startTime) return "next";
@@ -209,28 +246,20 @@ export default function SchoolAdminDashboard() {
       {/* Header */}
       <div className="mb-9">
         <div>
-          <h1 className="text-3xl font-semibold mb-2 text-blue-600">Tổng quan</h1>
-          <p className="text-gray-600 dark:text-gray-400 text-base m-0">Tổng quan và quản lý toàn bộ hoạt động của trường</p>
+          <h1 className="text-3xl font-semibold mb-2 text-blue-600">
+            Tổng quan
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 text-base m-0">
+            Tổng quan và quản lý toàn bộ hoạt động của trường
+          </p>
         </div>
       </div>
 
       {/* Stats Cards */}
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-9">
-        <StatCard
-          icon={UserCheck}
-          title="Tổng học sinh"
-          value="735"
-        />
-        <StatCard
-          icon={GraduationCap}
-          title="Giáo viên"
-          value="45"
-        />
-        <StatCard
-          icon={Users}
-          title="Lớp học"
-          value="21"
-        />
+        <StatCard icon={UserCheck} title="Tổng học sinh" value="735" />
+        <StatCard icon={GraduationCap} title="Giáo viên" value="45" />
+        <StatCard icon={Users} title="Lớp học" value="21" />
         <StatCard
           icon={BarChart3}
           title="Điểm TB trường"
@@ -249,15 +278,16 @@ export default function SchoolAdminDashboard() {
         {/* Class Overview Section */}
         <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 m-0">Tổng quan theo khối</h3>
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 m-0">
+              Tổng quan theo khối
+            </h3>
             <button
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-              onClick={() => setShowModal(true)}
-            >
+              onClick={() => setShowModal(true)}>
               Xem chi tiết
             </button>
           </div>
-          
+
           {/* Class Overview Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
             {mockGrades.map((grade, index) => (
@@ -273,55 +303,64 @@ export default function SchoolAdminDashboard() {
                 {getTodayString()}
               </span>
             </h3>
-            
+
             {/* Class Selector */}
             <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
               {classList.map((cls) => (
                 <button
                   key={cls.id}
                   className={`px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                    selectedClass === cls.id 
-                      ? 'bg-blue-600 text-white' 
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                    selectedClass === cls.id
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                   }`}
-                  onClick={() => setSelectedClass(cls.id)}
-                >
+                  onClick={() => setSelectedClass(cls.id)}>
                   {cls.name}
                 </button>
               ))}
             </div>
-            
+
             {/* Timetable List */}
             <div className="space-y-3 max-h-80 overflow-y-auto">
               {(timetable[selectedClass] || []).map((item, idx) => {
                 const status = getPeriodStatus(item.time);
-                let statusClasses = 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600';
+                let statusClasses =
+                  "bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600";
                 if (status === "current") {
-                  statusClasses = 'bg-blue-50 dark:bg-blue-900/30 border-blue-300 dark:border-blue-600';
+                  statusClasses =
+                    "bg-blue-50 dark:bg-blue-900/30 border-blue-300 dark:border-blue-600";
                 } else if (status === "next") {
-                  statusClasses = 'bg-green-50 dark:bg-green-900/30 border-green-300 dark:border-green-600';
+                  statusClasses =
+                    "bg-green-50 dark:bg-green-900/30 border-green-300 dark:border-green-600";
                 }
-                
+
                 return (
                   <div
                     key={idx}
-                    className={`p-4 rounded-lg border flex items-center justify-between ${statusClasses}`}
-                  >
+                    className={`p-4 rounded-lg border flex items-center justify-between ${statusClasses}`}>
                     <div>
-                      <p className={`font-semibold text-gray-800 dark:text-gray-200 mb-1 ${
-                        status === "current" || status === "next" ? 'text-blue-600 dark:text-blue-400' : ''
-                      }`}>
+                      <p
+                        className={`font-semibold text-gray-800 dark:text-gray-200 mb-1 ${
+                          status === "current" || status === "next"
+                            ? "text-blue-600 dark:text-blue-400"
+                            : ""
+                        }`}>
                         {item.period}: {item.subject}
                       </p>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {classList.find(c => c.id === selectedClass)?.name || selectedClass} - GV: {item.teacher}
+                        {classList.find((c) => c.id === selectedClass)?.name ||
+                          selectedClass}{" "}
+                        - GV: {item.teacher}
                       </p>
                     </div>
-                    <span className={`text-sm font-medium ${
-                      status === "current" ? 'text-blue-600 dark:text-blue-400' : 
-                      status === "next" ? 'text-green-600 dark:text-green-400' : 
-                      'text-gray-600 dark:text-gray-400'
-                    }`}>
+                    <span
+                      className={`text-sm font-medium ${
+                        status === "current"
+                          ? "text-blue-600 dark:text-blue-400"
+                          : status === "next"
+                          ? "text-green-600 dark:text-green-400"
+                          : "text-gray-600 dark:text-gray-400"
+                      }`}>
                       {item.time.replace("-", " - ")}
                     </span>
                   </div>
@@ -355,29 +394,43 @@ export default function SchoolAdminDashboard() {
       {/* Recent Reports Section */}
       <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm">
         <div className="mb-6">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 m-0">Báo cáo gần đây</h3>
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 m-0">
+            Báo cáo gần đây
+          </h3>
         </div>
         <ul className="space-y-4">
           <li className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/30 rounded-lg">
             <div className="flex items-center gap-3">
               <i className="bx bx-group text-green-600 text-xl"></i>
-              <p className="text-gray-800 dark:text-gray-200 m-0">Đã thêm lớp học mới</p>
+              <p className="text-gray-800 dark:text-gray-200 m-0">
+                Đã thêm lớp học mới
+              </p>
             </div>
-            <span className="text-sm text-gray-600 dark:text-gray-400">30 phút trước</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              30 phút trước
+            </span>
           </li>
           <li className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
             <div className="flex items-center gap-3">
               <i className="bx bx-calendar text-gray-600 text-xl"></i>
-              <p className="text-gray-800 dark:text-gray-200 m-0">Đã tạo lịch thi mới</p>
+              <p className="text-gray-800 dark:text-gray-200 m-0">
+                Đã tạo lịch thi mới
+              </p>
             </div>
-            <span className="text-sm text-gray-600 dark:text-gray-400">2 giờ trước</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              2 giờ trước
+            </span>
           </li>
           <li className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/30 rounded-lg">
             <div className="flex items-center gap-3">
               <i className="bx bx-bar-chart-alt-2 text-green-600 text-xl"></i>
-              <p className="text-gray-800 dark:text-gray-200 m-0">Đã đổi thời khóa biểu</p>
+              <p className="text-gray-800 dark:text-gray-200 m-0">
+                Đã đổi thời khóa biểu
+              </p>
             </div>
-            <span className="text-sm text-gray-600 dark:text-gray-400">1 ngày trước</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              1 ngày trước
+            </span>
           </li>
         </ul>
       </div>
@@ -386,8 +439,10 @@ export default function SchoolAdminDashboard() {
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full max-h-[80vh] overflow-y-auto">
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Chọn khối để xem chi tiết</h3>
-            
+            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+              Chọn khối để xem chi tiết
+            </h3>
+
             {/* Grade Selector */}
             <div className="flex gap-2 mb-4">
               {mockGrades.map((grade) => (
@@ -395,42 +450,76 @@ export default function SchoolAdminDashboard() {
                   key={grade.grade}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     selectedGrade === grade.grade
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                   }`}
-                  onClick={() => setSelectedGrade(grade.grade)}
-                >
+                  onClick={() => setSelectedGrade(grade.grade)}>
                   Khối {grade.grade}
                 </button>
               ))}
             </div>
-            
+
             {selectedGrade && (
               <div className="space-y-4">
                 {(() => {
-                  const info = mockGrades.find(g => g.grade === selectedGrade);
-                  const classesInGrade = classList.filter(cls => cls.grade === selectedGrade);
+                  const info = mockGrades.find(
+                    (g) => g.grade === selectedGrade
+                  );
+                  const classesInGrade = classList.filter(
+                    (cls) => cls.grade === selectedGrade
+                  );
                   return (
                     <>
-                      <p className="font-semibold text-gray-800 dark:text-gray-200">Thông tin khối {info.grade}</p>
+                      <p className="font-semibold text-gray-800 dark:text-gray-200">
+                        Thông tin khối {info.grade}
+                      </p>
                       <div className="space-y-2 text-sm">
-                        <div className="text-gray-600 dark:text-gray-400">• Số lớp: <span className="font-semibold text-gray-800 dark:text-gray-200">{info.totalClasses}</span></div>
-                        <div className="text-gray-600 dark:text-gray-400">• Tổng học sinh: <span className="font-semibold text-gray-800 dark:text-gray-200">{info.totalStudents}</span></div>
-                        <div className="text-gray-600 dark:text-gray-400">• Điểm trung bình: <span className="font-semibold text-blue-600">{info.averageScore}</span></div>
+                        <div className="text-gray-600 dark:text-gray-400">
+                          • Số lớp:{" "}
+                          <span className="font-semibold text-gray-800 dark:text-gray-200">
+                            {info.totalClasses}
+                          </span>
+                        </div>
+                        <div className="text-gray-600 dark:text-gray-400">
+                          • Tổng học sinh:{" "}
+                          <span className="font-semibold text-gray-800 dark:text-gray-200">
+                            {info.totalStudents}
+                          </span>
+                        </div>
+                        <div className="text-gray-600 dark:text-gray-400">
+                          • Điểm trung bình:{" "}
+                          <span className="font-semibold text-blue-600">
+                            {info.averageScore}
+                          </span>
+                        </div>
                       </div>
-                      <p className="font-semibold text-gray-800 dark:text-gray-200">Danh sách lớp:</p>
+                      <p className="font-semibold text-gray-800 dark:text-gray-200">
+                        Danh sách lớp:
+                      </p>
                       <div className="max-h-40 overflow-y-auto space-y-2">
                         {classesInGrade.length === 0 && (
-                          <div className="text-center py-4 text-gray-500 dark:text-gray-400">Không có lớp nào thuộc khối này.</div>
+                          <div className="text-center py-4 text-gray-500 dark:text-gray-400">
+                            Không có lớp nào thuộc khối này.
+                          </div>
                         )}
-                        {classesInGrade.map(cls => (
-                          <div key={cls.id} className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                            <div className="font-medium text-gray-800 dark:text-gray-200 mb-1">{cls.name}</div>
-                            <div className="text-sm text-gray-600 dark:text-gray-400">
-                              Sĩ số: <span className="font-medium text-gray-800 dark:text-gray-200">{cls.students}</span>
+                        {classesInGrade.map((cls) => (
+                          <div
+                            key={cls.id}
+                            className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <div className="font-medium text-gray-800 dark:text-gray-200 mb-1">
+                              {cls.name}
                             </div>
                             <div className="text-sm text-gray-600 dark:text-gray-400">
-                              Điểm TB: <span className="font-medium text-blue-600">{cls.avgScore}</span>
+                              Sĩ số:{" "}
+                              <span className="font-medium text-gray-800 dark:text-gray-200">
+                                {cls.students}
+                              </span>
+                            </div>
+                            <div className="text-sm text-gray-600 dark:text-gray-400">
+                              Điểm TB:{" "}
+                              <span className="font-medium text-blue-600">
+                                {cls.avgScore}
+                              </span>
                             </div>
                           </div>
                         ))}
@@ -440,7 +529,7 @@ export default function SchoolAdminDashboard() {
                 })()}
               </div>
             )}
-            
+
             {/* Modal Actions */}
             <div className="mt-6">
               <button
@@ -448,8 +537,7 @@ export default function SchoolAdminDashboard() {
                 onClick={() => {
                   setShowModal(false);
                   setSelectedGrade(null);
-                }}
-              >
+                }}>
                 Đóng
               </button>
             </div>

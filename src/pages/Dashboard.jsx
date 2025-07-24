@@ -99,7 +99,8 @@ function Dashboard() {
         onMenuClick={handleSidebarMenuClick}
         role={user.role}
       />
-      <div className={`transition-all duration-300 
+      <div
+        className={`transition-all duration-300 
         ${isSidebarCollapsed ? "lg:ml-16" : "lg:ml-64"}
       `}>
         {/* TopBar fixed trên cùng */}
