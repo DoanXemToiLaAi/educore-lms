@@ -1,6 +1,5 @@
 
 import React from "react";
-import '../../assets/css/teacher-dashboard.css';
 
 // Thống kê tổng quan
 const stats = [
@@ -108,31 +107,34 @@ const activities = [
 export default function TeacherDashboard() {
 
   return (
-    <div className="teacher-dashboard">
+    <div className="font-poppins p-9 bg-gray-50 dark:bg-gray-900 w-full text-gray-800 dark:text-gray-200">
       {/* Header */}
-      <div className="header">
-        <div className="left">
-          <h1>Tổng quan</h1>
-          <ul className="breadcrumb">
-            <li>Tổng quan giáo viên</li>
+      <div className="flex items-center justify-between mb-5">
+        <div>
+          <h1 className="text-4xl font-bold text-blue-600 mb-2">Tổng quan</h1>
+          <ul className="flex items-center gap-4 mt-1">
+            <li className="text-gray-600 dark:text-gray-400 text-base pointer-events-none">Tổng quan giáo viên</li>
           </ul>
         </div>
-        <button className="report">
+        <button className="h-9 px-4 rounded-full bg-blue-600 text-white flex items-center font-medium border-none cursor-pointer gap-2 hover:bg-blue-700 transition-colors">
           <i className="bx bx-cloud-download"></i>
           <span>Tải báo cáo</span>
         </button>
       </div>
 
       {/* Stats Cards */}
-      <div className="insights-charts three-charts">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
         {stats.map((stat, idx) => (
-          <div className="chart-card teacher-stat-card" key={stat.label}>
-            <div className="tenant-active-info">
-              <i className={`bx ${stat.icon}`} style={{ color: stat.color, background: stat.bg }}></i>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm h-28 flex flex-col justify-center items-center p-4" key={stat.label}>
+            <div className="flex items-center gap-4 mb-2 w-full justify-center">
+              <i 
+                className={`bx ${stat.icon} text-5xl rounded-xl p-4 flex items-center justify-center min-w-14 min-h-14`}
+                style={{ color: stat.color, background: stat.bg }}
+              ></i>
               <div>
-                <h3>{stat.value}</h3>
-                <p>{stat.label}</p>
-                <span style={{ color: '#888', fontSize: '0.98em' }}>{stat.sub}</span>
+                <h3 className="text-3xl font-bold m-0 text-blue-600">{stat.value}</h3>
+                <p className="m-0 text-gray-600 dark:text-gray-400 text-lg font-semibold">{stat.label}</p>
+                <span className="text-gray-500 dark:text-gray-500 text-base">{stat.sub}</span>
               </div>
             </div>
           </div>
@@ -140,33 +142,48 @@ export default function TeacherDashboard() {
       </div>
 
       {/* Weekly Schedule */}
-      <div className="teacher-score-section">
-        <div className="chart-card large-chart">
-          <h2 style={{ fontSize: '1.2rem', fontWeight: 600, marginBottom: 16 }}>Lịch dạy học trong tuần</h2>
-          <div className="weekly-schedule-grid">
+      <div className="mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6 min-h-80 w-full">
+          <h2 className="text-xl font-semibold mb-4 text-blue-600">Lịch dạy học trong tuần</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7 gap-4">
             {weeklySchedule.map((day, idx) => (
-              <div key={day.day} className="schedule-day">
-                <div className="day-header">
-                  <h3>{day.day}</h3>
-                  <span className="day-date">{day.date}</span>
+              <div key={day.day} className="space-y-3">
+                <div className="text-center">
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-200 text-sm mb-1">{day.day}</h3>
+                  <span className="text-xs text-gray-600 dark:text-gray-400">{day.date}</span>
                 </div>
-                <div className="lessons-list">
-                  {day.lessons.map((lesson, lessonIdx) => (
-                    <div key={lessonIdx} className={`lesson-item ${lesson.status}`}>
-                      <div className="lesson-time">{lesson.time}</div>
-                      <div className="lesson-info">
-                        <div className="lesson-subject">{lesson.subject}</div>
-                        <div className="lesson-details">
-                          <span className="lesson-class">{lesson.class}</span>
-                          <span className="lesson-room">Phòng {lesson.room}</span>
+                <div className="space-y-2 max-h-64 overflow-y-auto">
+                  {day.lessons.map((lesson, lessonIdx) => {
+                    let statusClasses = 'bg-gray-100 dark:bg-gray-700 border-gray-200 dark:border-gray-600';
+                    let statusIndicator = '○';
+                    if (lesson.status === 'completed') {
+                      statusClasses = 'bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-700';
+                      statusIndicator = '✓';
+                    } else if (lesson.status === 'today') {
+                      statusClasses = 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700 animate-pulse';
+                      statusIndicator = '●';
+                    }
+                    
+                    return (
+                      <div key={lessonIdx} className={`p-3 rounded-lg border ${statusClasses} hover:shadow-sm transition-shadow`}>
+                        <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">{lesson.time}</div>
+                        <div>
+                          <div className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1">{lesson.subject}</div>
+                          <div className="text-xs text-gray-600 dark:text-gray-400 space-x-2">
+                            <span className="font-medium">{lesson.class}</span>
+                            <span>Phòng {lesson.room}</span>
+                          </div>
+                        </div>
+                        <div className={`text-sm font-medium text-right mt-1 ${
+                          lesson.status === 'completed' ? 'text-green-600' : 
+                          lesson.status === 'today' ? 'text-blue-600' : 
+                          'text-gray-400'
+                        }`}>
+                          {statusIndicator}
                         </div>
                       </div>
-                      <div className={`lesson-status ${lesson.status}`}>
-                        {lesson.status === 'completed' ? '✓' : 
-                         lesson.status === 'today' ? '●' : '○'}
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             ))}
@@ -175,74 +192,108 @@ export default function TeacherDashboard() {
       </div>
 
       {/* Student Table & Exam List */}
-      <div className="teacher-data-grid">
-        <div className="teacher-table-card">
-          <div className="header"><h3>Danh sách học sinh</h3></div>
-          <table className="teacher-table">
-            <thead>
-              <tr>
-                <th>Họ tên</th>
-                <th>Lớp</th>
-                <th>Điểm số</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map((s, idx) => (
-                <tr key={s.name}>
-                  <td>{s.name}</td>
-                  <td>{s.class}</td>
-                  <td>{s.score}</td>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6 min-h-56">
+          <div className="mb-3">
+            <h3 className="text-xl font-semibold mb-3 text-blue-600">Danh sách học sinh</h3>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-base">
+              <thead>
+                <tr className="border-b border-gray-200 dark:border-gray-700">
+                  <th className="text-left py-3 px-2 text-gray-600 dark:text-gray-400 font-semibold">Họ tên</th>
+                  <th className="text-left py-3 px-2 text-gray-600 dark:text-gray-400 font-semibold">Lớp</th>
+                  <th className="text-left py-3 px-2 text-gray-600 dark:text-gray-400 font-semibold">Điểm số</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {students.map((s, idx) => (
+                  <tr key={s.name} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <td className="py-3 px-2 text-gray-800 dark:text-gray-200">{s.name}</td>
+                    <td className="py-3 px-2 text-gray-800 dark:text-gray-200">{s.class}</td>
+                    <td className="py-3 px-2 text-gray-800 dark:text-gray-200">{s.score}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div className="teacher-table-card">
-          <div className="header"><h3>Đề thi đã tạo</h3></div>
-          <table className="teacher-table">
-            <thead>
-              <tr>
-                <th>Tên đề</th>
-                <th>Ngày tạo</th>
-                <th>Trạng thái</th>
-              </tr>
-            </thead>
-            <tbody>
-              {exams.map((e, idx) => (
-                <tr key={e.name}>
-                  <td>{e.name}</td>
-                  <td>{e.date}</td>
-                  <td>{e.status}</td>
+        
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6 min-h-56">
+          <div className="mb-3">
+            <h3 className="text-xl font-semibold mb-3 text-blue-600">Đề thi đã tạo</h3>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-base">
+              <thead>
+                <tr className="border-b border-gray-200 dark:border-gray-700">
+                  <th className="text-left py-3 px-2 text-gray-600 dark:text-gray-400 font-semibold">Tên đề</th>
+                  <th className="text-left py-3 px-2 text-gray-600 dark:text-gray-400 font-semibold">Ngày tạo</th>
+                  <th className="text-left py-3 px-2 text-gray-600 dark:text-gray-400 font-semibold">Trạng thái</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {exams.map((e, idx) => (
+                  <tr key={e.name} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <td className="py-3 px-2 text-gray-800 dark:text-gray-200">{e.name}</td>
+                    <td className="py-3 px-2 text-gray-800 dark:text-gray-200">{e.date}</td>
+                    <td className="py-3 px-2 text-gray-800 dark:text-gray-200">{e.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
       {/* Quick Actions & Recent Activities */}
-      <div className="teacher-bottom-grid">
-        <div className="teacher-actions-card">
-          <div className="header"><h3>Thao tác nhanh</h3></div>
-          <div className="teacher-actions-list">
-            <button className="teacher-action-btn"><i className="bx bx-task"></i> Tạo đề kiểm tra</button>
-            <button className="teacher-action-btn"><i className="bx bx-book"></i> Tạo bài giảng</button>
-            <button className="teacher-action-btn"><i className="bx bx-message"></i> Gửi thông báo</button>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6">
+          <div className="mb-3">
+            <h3 className="text-xl font-semibold mb-3 text-blue-600">Thao tác nhanh</h3>
+          </div>
+          <div className="space-y-3">
+            <button className="w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-3 font-medium">
+              <i className="bx bx-task text-lg"></i> Tạo đề kiểm tra
+            </button>
+            <button className="w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-3 font-medium">
+              <i className="bx bx-book text-lg"></i> Tạo bài giảng
+            </button>
+            <button className="w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-3 font-medium">
+              <i className="bx bx-message text-lg"></i> Gửi thông báo
+            </button>
           </div>
         </div>
-        <div className="teacher-activity-card">
-          <div className="header"><h3>Hoạt động gần đây</h3></div>
-          <ul className="teacher-activity-list">
-            {activities.map((a, idx) => (
-              <li key={idx} className={`activity-item ${a.status}`}>
-                <i className={`bx ${a.icon}`}></i>
-                <div className="activity-info">
-                  <span className="activity-title">{a.title}</span>
-                  <span className="activity-time">{a.time}</span>
-                </div>
-                <span className={`activity-status ${a.status}`}>{a.status === 'completed' ? 'Hoàn thành' : a.status === 'pending' ? 'Đang chờ' : 'Mới'}</span>
-              </li>
-            ))}
+        
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6">
+          <div className="mb-3">
+            <h3 className="text-xl font-semibold mb-3 text-blue-600">Hoạt động gần đây</h3>
+          </div>
+          <ul className="space-y-4 max-h-64 overflow-y-auto">
+            {activities.map((a, idx) => {
+              let statusClasses = 'bg-gray-100 dark:bg-gray-700';
+              let statusText = 'Mới';
+              if (a.status === 'completed') {
+                statusClasses = 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400';
+                statusText = 'Hoàn thành';
+              } else if (a.status === 'pending') {
+                statusClasses = 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400';
+                statusText = 'Đang chờ';
+              }
+              
+              return (
+                <li key={idx} className={`p-3 rounded-lg ${statusClasses.includes('bg-gray') ? statusClasses : statusClasses.split(' ')[0] + ' ' + statusClasses.split(' ')[1]} flex items-center gap-3`}>
+                  <i className={`bx ${a.icon} text-xl text-gray-600 dark:text-gray-400`}></i>
+                  <div className="flex-1">
+                    <span className="block font-medium text-gray-800 dark:text-gray-200 text-sm">{a.title}</span>
+                    <span className="block text-xs text-gray-600 dark:text-gray-400 mt-1">{a.time}</span>
+                  </div>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusClasses}`}>
+                    {statusText}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>

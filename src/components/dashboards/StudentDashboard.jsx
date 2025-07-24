@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import "../../assets/css/student-dashboard.css";
 
 const QuickStatCard = ({ icon, title, value, color }) => (
-  <li>
-    <i className={`bx ${icon}`}></i>
-    <div className="info">
-      <h3>{value}</h3>
-      <p>{title}</p>
+  <li className="p-6 bg-white dark:bg-gray-800 rounded-2xl flex items-center gap-6 cursor-pointer shadow-sm hover:transform hover:-translate-y-0.5 hover:shadow-lg transition-all">
+    <i className={`bx ${icon} w-20 h-20 bg-blue-600 text-white rounded-lg text-4xl flex items-center justify-center`}></i>
+    <div className="flex-1">
+      <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-2">{value}</h3>
+      <p className="text-gray-600 dark:text-gray-400 text-sm m-0">{title}</p>
     </div>
   </li>
 );
@@ -40,50 +39,72 @@ const ClassCard = ({ subject, teacher, time, room, status }) => {
   const [start, end] = time.split(" - ").map((t) => t.trim());
   const realStatus = getClassStatus(start, end);
 
+  let statusClasses = 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600';
+  let statusText = 'Đã kết thúc';
+  
+  if (realStatus === "live") {
+    statusClasses = 'bg-green-50 dark:bg-green-900/30 border-green-300 dark:border-green-600';
+    statusText = 'Đang diễn ra';
+  } else if (realStatus === "upcoming") {
+    statusClasses = 'bg-blue-50 dark:bg-blue-900/30 border-blue-300 dark:border-blue-600';
+    statusText = 'Sắp tới';
+  }
+
   return (
-    <div className="class-card">
-      <div className="class-header">
-        <h3 className="class-subject">{subject}</h3>
-        <span className={`class-status ${realStatus}`}>
-          {realStatus === "live"
-            ? "Đang diễn ra"
-            : realStatus === "upcoming"
-            ? "Sắp tới"
-            : "Đã kết thúc"}
+    <div className={`p-5 rounded-xl border transition-all hover:shadow-sm ${statusClasses}`}>
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 m-0">{subject}</h3>
+        <span className={`px-2 py-1 rounded-full text-xs font-medium uppercase tracking-wide ${
+          realStatus === "live" 
+            ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400" 
+            : realStatus === "upcoming" 
+            ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400" 
+            : "bg-gray-100 text-gray-800 dark:bg-gray-600 dark:text-gray-300"
+        }`}>
+          {statusText}
         </span>
       </div>
-      <div className="class-details">
-        <p className="class-detail">GV: {teacher}</p>
-        <p className="class-detail">Thời gian: {time}</p>
-        <p className="class-detail">Phòng: {room}</p>
+      <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+        <p className="m-0">GV: {teacher}</p>
+        <p className="m-0">Thời gian: {time}</p>
+        <p className="m-0">Phòng: {room}</p>
       </div>
     </div>
   );
 };
 
-const AssignmentCard = ({ title, subject, dueDate, status }) => (
-  <div className="assignment-card">
-    <div className="assignment-header">
-      <h3 className="assignment-title">{title}</h3>
-      <span className={`assignment-status ${status}`}>
-        {status === "pending"
-          ? "Chưa hoàn thành"
-          : status === "submitted"
-          ? "Đã hoàn thành"
-          : "Quá hạn nộp"}
-      </span>
+const AssignmentCard = ({ title, subject, dueDate, status }) => {
+  let statusClasses = 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+  let statusText = 'Quá hạn nộp';
+  
+  if (status === "pending") {
+    statusClasses = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400';
+    statusText = 'Chưa hoàn thành';
+  } else if (status === "submitted") {
+    statusClasses = 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
+    statusText = 'Đã hoàn thành';
+  }
+
+  return (
+    <div className="bg-gray-50 dark:bg-gray-700 p-5 rounded-xl">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 m-0">{title}</h3>
+        <span className={`px-2 py-1 rounded-full text-xs font-medium uppercase tracking-wide ${statusClasses}`}>
+          {statusText}
+        </span>
+      </div>
+      <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400 mb-4">
+        <p className="m-0">Môn: {subject}</p>
+        <p className="m-0">Hạn nộp: {dueDate}</p>
+      </div>
+      {status === "pending" && (
+        <button className="w-full p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm">
+          Làm bài
+        </button>
+      )}
     </div>
-    <div className="assignment-details">
-      <p className="assignment-detail">Môn: {subject}</p>
-      <p className="assignment-detail">Hạn nộp: {dueDate}</p>
-    </div>
-    {status === "pending" && (
-      <button className="assignment-action">
-        Làm bài
-      </button>
-    )}
-  </div>
-);
+  );
+};
 
 export default function StudentDashboard() {
   const mockClasses = [
@@ -187,17 +208,17 @@ export default function StudentDashboard() {
   ];
 
   return (
-    <div className="student-dashboard">
+    <div className="w-full text-gray-800 dark:text-gray-200">
       {/* Header */}
-      <div className="header">
-        <div className="left">
-          <h1>Tổng quan</h1>
-          <p>Hôm nay bạn có 3 lớp học và 2 bài tập cần hoàn thành</p>
+      <div className="mb-9">
+        <div>
+          <h1 className="text-3xl font-semibold mb-2 text-blue-600">Tổng quan</h1>
+          <p className="text-gray-600 dark:text-gray-400 text-base m-0">Hôm nay bạn có 3 lớp học và 2 bài tập cần hoàn thành</p>
         </div>
       </div>
 
       {/* Quick Stats */}
-      <ul className="insights">
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-9">
         <QuickStatCard
           icon="bx-book-open"
           title="Lớp học hôm nay"
@@ -221,22 +242,22 @@ export default function StudentDashboard() {
       </ul>
 
       {/* Main Content */}
-      <div className="bottom-data">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-9">
         {/* Classes Today */}
-        <div className="classes-today" style={{ maxHeight: "fit-content", width: 945}}>
-          <div className="header">
-            <h3>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 m-0">
               Lớp học hôm nay
-              <span className="date-info">{getTodayString()}</span>
+              <span className="text-sm font-semibold text-blue-600 ml-3">{getTodayString()}</span>
             </h3>
             <span 
-              className="view-details"
+              className="text-sm text-blue-600 font-medium cursor-pointer hover:text-blue-800 transition-colors"
               onClick={() => setShowScheduleModal(true)}
             >
               Xem chi tiết
             </span>
           </div>
-          <div className="class-list">
+          <div className="space-y-4">
             {mockClasses.map((classItem, index) => (
               <ClassCard key={index} {...classItem} />
             ))}
@@ -244,13 +265,13 @@ export default function StudentDashboard() {
         </div>
 
         {/* Sidebar */}
-        <div className="sidebar-content">
+        <div className="space-y-6">
           {/* Assignments */}
-          <div className="assignments">
-            <div className="header">
-              <h3>Bài tập</h3>
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm">
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 m-0">Bài tập</h3>
             </div>
-            <div>
+            <div className="space-y-3">
               {mockAssignments.map((assignment, index) => (
                 <AssignmentCard key={index} {...assignment} />
               ))}
@@ -258,36 +279,36 @@ export default function StudentDashboard() {
           </div>
 
           {/* Notifications */}
-          <div className="notifications">
-            <div className="header">
-              <h3>Thông báo</h3>
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm">
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 m-0">Thông báo</h3>
             </div>
-            <div className="notification-list">
-              <div className="notification-item">
-                <div className="notification-icon blue">
-                  <i className="bx bx-bell"></i>
+            <div className="space-y-4">
+              <div className="flex items-center gap-4 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+                <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
+                  <i className="bx bx-bell text-blue-600 text-sm"></i>
                 </div>
-                <div className="notification-content">
-                  <p className="notification-title">Bài kiểm tra Toán học</p>
-                  <p className="notification-time">Ngày mai 8:00 AM</p>
-                </div>
-              </div>
-              <div className="notification-item">
-                <div className="notification-icon green">
-                  <i className="bx bx-bell"></i>
-                </div>
-                <div className="notification-content">
-                  <p className="notification-title">Điểm bài tập đã được cập nhật</p>
-                  <p className="notification-time">2 giờ trước</p>
+                <div className="flex-1">
+                  <p className="font-medium text-gray-800 dark:text-gray-200 text-sm m-0">Bài kiểm tra Toán học</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 m-0">Ngày mai 8:00 AM</p>
                 </div>
               </div>
-              <div className="notification-item">
-                <div className="notification-icon orange">
-                  <i className="bx bx-bell"></i>
+              <div className="flex items-center gap-4 p-3 bg-green-50 dark:bg-green-900/30 rounded-lg">
+                <div className="w-8 h-8 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center">
+                  <i className="bx bx-bell text-green-600 text-sm"></i>
                 </div>
-                <div className="notification-content">
-                  <p className="notification-title">Nhắc nhở nộp bài tập</p>
-                  <p className="notification-time">1 ngày trước</p>
+                <div className="flex-1">
+                  <p className="font-medium text-gray-800 dark:text-gray-200 text-sm m-0">Điểm bài tập đã được cập nhật</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 m-0">2 giờ trước</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 p-3 bg-orange-50 dark:bg-orange-900/30 rounded-lg">
+                <div className="w-8 h-8 bg-orange-100 dark:bg-orange-900/50 rounded-full flex items-center justify-center">
+                  <i className="bx bx-bell text-orange-600 text-sm"></i>
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium text-gray-800 dark:text-gray-200 text-sm m-0">Nhắc nhở nộp bài tập</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 m-0">1 ngày trước</p>
                 </div>
               </div>
             </div>
@@ -297,25 +318,27 @@ export default function StudentDashboard() {
 
       {/* Schedule Modal */}
       {showScheduleModal && (
-        <div className="schedule-modal-overlay">
-          <div className="schedule-modal">
-            <h3 className="schedule-modal-title">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full max-h-[80vh] overflow-y-auto">
+            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-6">
               Thời khóa biểu từ hôm nay đến 2 ngày tiếp theo
             </h3>
-            <div>
+            <div className="space-y-6">
               {scheduleByDate.map((day, idx) => (
-                <div key={idx} className="schedule-day">
-                  <p className="schedule-date">{day.date}</p>
+                <div key={idx} className="space-y-3">
+                  <p className="font-semibold text-blue-600 text-base">{day.date}</p>
                   {day.classes.length === 0 ? (
-                    <div className="schedule-empty">Không có lớp học.</div>
+                    <div className="text-center py-4 text-gray-500 dark:text-gray-400">Không có lớp học.</div>
                   ) : (
-                    <div>
+                    <div className="space-y-3">
                       {day.classes.map((cls, i) => (
-                        <div key={i} className="schedule-class">
-                          <div className="schedule-class-subject">{cls.subject}</div>
-                          <div className="schedule-class-detail">GV: {cls.teacher}</div>
-                          <div className="schedule-class-detail">Thời gian: {cls.time}</div>
-                          <div className="schedule-class-detail">Phòng: {cls.room}</div>
+                        <div key={i} className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                          <div className="font-semibold text-gray-800 dark:text-gray-200 mb-2">{cls.subject}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                            <div>GV: {cls.teacher}</div>
+                            <div>Thời gian: {cls.time}</div>
+                            <div>Phòng: {cls.room}</div>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -323,9 +346,9 @@ export default function StudentDashboard() {
                 </div>
               ))}
             </div>
-            <div className="schedule-modal-actions">
+            <div className="mt-6">
               <button
-                className="schedule-modal-close"
+                className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-medium"
                 onClick={() => setShowScheduleModal(false)}
               >
                 Đóng

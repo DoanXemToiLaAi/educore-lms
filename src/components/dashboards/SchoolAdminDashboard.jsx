@@ -15,18 +15,18 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import "../../assets/css/dashboard.css";
-import "../../assets/css/school-admin-dashboard.css";
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const StatCard = ({ icon: Icon, title, value, change, color }) => (
-  <li className="stat-card">
-    <i className={`bx ${getIconClass(Icon)}`}></i>
-    <div className="info">
-      <h3>{value}</h3>
-      <p>{title}</p>
+  <li className="p-6 bg-white dark:bg-gray-800 rounded-2xl flex items-center gap-6 cursor-pointer relative shadow-sm">
+    <i className={`bx ${getIconClass(Icon)} text-blue-600 text-3xl w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center`}></i>
+    <div className="flex-1">
+      <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-2">{value}</h3>
+      <p className="text-gray-600 dark:text-gray-400 text-sm m-0">{title}</p>
       {change && (
-        <span className={`change ${change.positive ? 'positive' : 'negative'}`}>
+        <span className={`absolute bottom-2 right-4 text-xs font-medium ${
+          change.positive ? 'text-green-600' : 'text-red-600'
+        }`}>
           {change.positive ? "+" : ""}{change.value}% so với tháng trước
         </span>
       )}
@@ -47,19 +47,19 @@ const ClassOverviewCard = ({
   totalStudents,
   averageScore,
 }) => (
-  <div className="class-overview-card">
-    <div className="class-header">
-      <h3>Khối {grade}</h3>
-      <span className="class-count">{totalClasses} lớp</span>
+  <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-xl border border-gray-200 dark:border-gray-600">
+    <div className="flex items-center justify-between mb-3">
+      <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 m-0">Khối {grade}</h3>
+      <span className="text-sm text-gray-600 dark:text-gray-400">{totalClasses} lớp</span>
     </div>
-    <div className="class-stats">
-      <div className="stat-row">
-        <span>Học sinh:</span>
-        <span className="stat-value">{totalStudents}</span>
+    <div className="space-y-2">
+      <div className="flex justify-between items-center text-sm">
+        <span className="text-gray-600 dark:text-gray-400">Học sinh:</span>
+        <span className="font-semibold text-gray-800 dark:text-gray-200">{totalStudents}</span>
       </div>
-      <div className="stat-row">
-        <span>Điểm TB:</span>
-        <span className="stat-value score">{averageScore}</span>
+      <div className="flex justify-between items-center text-sm">
+        <span className="text-gray-600 dark:text-gray-400">Điểm TB:</span>
+        <span className="font-semibold text-blue-600">{averageScore}</span>
       </div>
     </div>
   </div>
@@ -205,15 +205,17 @@ export default function SchoolAdminDashboard() {
   }
 
   return (
-    <div className="school-admin-dashboard">
-      <div className="header">
-        <div className="left">
-          <h1>Tổng quan</h1>
-          <p>Tổng quan và quản lý toàn bộ hoạt động của trường</p>
+    <div className="w-full text-gray-800 dark:text-gray-200">
+      {/* Header */}
+      <div className="mb-9">
+        <div>
+          <h1 className="text-3xl font-semibold mb-2 text-blue-600">Tổng quan</h1>
+          <p className="text-gray-600 dark:text-gray-400 text-base m-0">Tổng quan và quản lý toàn bộ hoạt động của trường</p>
         </div>
       </div>
 
-      <ul className="insights">
+      {/* Stats Cards */}
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-9">
         <StatCard
           icon={UserCheck}
           title="Tổng học sinh"
@@ -237,43 +239,50 @@ export default function SchoolAdminDashboard() {
         />
       </ul>
 
-      {/* Biểu đồ điểm trung bình các lớp theo tháng */}
-      <div className="chart-section">
+      {/* Chart Section */}
+      <div className="mt-8 mb-8 bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6 h-96 flex items-center justify-center">
         <Bar data={chartData} options={chartOptions} />
       </div>
 
-      <div className="bottom-data">
-        <div className="orders class-overview-section">
-          <div className="header">
-            <h3>Tổng quan theo khối</h3>
+      {/* Bottom Data Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        {/* Class Overview Section */}
+        <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 m-0">Tổng quan theo khối</h3>
             <button
-              className="view-details-btn"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
               onClick={() => setShowModal(true)}
             >
               Xem chi tiết
             </button>
           </div>
           
-          <div className="class-overview-grid">
+          {/* Class Overview Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
             {mockGrades.map((grade, index) => (
               <ClassOverviewCard key={index} {...grade} />
             ))}
           </div>
 
-          <div className="timetable-section">
-            <h3 className="timetable-title">
+          {/* Timetable Section */}
+          <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mt-6">
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
               Thời khóa biểu hôm nay
-              <span className="date-label">
+              <span className="text-sm font-semibold text-blue-600 ml-2">
                 {getTodayString()}
               </span>
             </h3>
             
-            <div className="class-selector">
+            {/* Class Selector */}
+            <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
               {classList.map((cls) => (
                 <button
                   key={cls.id}
-                  className={`class-btn ${
-                    selectedClass === cls.id ? 'active' : ''
+                  className={`px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+                    selectedClass === cls.id 
+                      ? 'bg-blue-600 text-white' 
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                   onClick={() => setSelectedClass(cls.id)}
                 >
@@ -282,34 +291,44 @@ export default function SchoolAdminDashboard() {
               ))}
             </div>
             
-            <div className="timetable-list">
+            {/* Timetable List */}
+            <div className="space-y-3 max-h-80 overflow-y-auto">
               {(timetable[selectedClass] || []).map((item, idx) => {
                 const status = getPeriodStatus(item.time);
-                let statusClass = '';
-                if (status === "current") statusClass = 'current';
-                else if (status === "next") statusClass = 'next';
+                let statusClasses = 'bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600';
+                if (status === "current") {
+                  statusClasses = 'bg-blue-50 dark:bg-blue-900/30 border-blue-300 dark:border-blue-600';
+                } else if (status === "next") {
+                  statusClasses = 'bg-green-50 dark:bg-green-900/30 border-green-300 dark:border-green-600';
+                }
                 
                 return (
                   <div
                     key={idx}
-                    className={`timetable-item ${statusClass}`}
+                    className={`p-4 rounded-lg border flex items-center justify-between ${statusClasses}`}
                   >
-                    <div className="period-info">
-                      <p className="period-title">
+                    <div>
+                      <p className={`font-semibold text-gray-800 dark:text-gray-200 mb-1 ${
+                        status === "current" || status === "next" ? 'text-blue-600 dark:text-blue-400' : ''
+                      }`}>
                         {item.period}: {item.subject}
                       </p>
-                      <p className="period-details">
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         {classList.find(c => c.id === selectedClass)?.name || selectedClass} - GV: {item.teacher}
                       </p>
                     </div>
-                    <span className="period-time">
+                    <span className={`text-sm font-medium ${
+                      status === "current" ? 'text-blue-600 dark:text-blue-400' : 
+                      status === "next" ? 'text-green-600 dark:text-green-400' : 
+                      'text-gray-600 dark:text-gray-400'
+                    }`}>
                       {item.time.replace("-", " - ")}
                     </span>
                   </div>
                 );
               })}
               {!timetable[selectedClass] && (
-                <div className="no-timetable">
+                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                   Lớp này chưa có thời khóa biểu hôm nay.
                 </div>
               )}
@@ -317,64 +336,67 @@ export default function SchoolAdminDashboard() {
           </div>
         </div>
 
-        <div className="reminders actions-section">
-          <div className="action-buttons">
-            <button className="action-btn primary">
+        {/* Actions Section */}
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm">
+          <div className="space-y-3">
+            <button className="w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
               Tạo lớp học mới
             </button>
-            <button className="action-btn secondary">
+            <button className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-medium">
               Tạo lịch thi mới
             </button>
-            <button className="action-btn secondary">
+            <button className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-medium">
               Thêm thời khóa biểu
             </button>
           </div>
         </div>
       </div>
 
-      {/* Khối báo cáo gần đây riêng biệt */}
-      <div className="recent-reports-section">
-        <div className="recent-reports">
-          <div className="header">
-            <h3>Báo cáo gần đây</h3>
-          </div>
-          <ul className="task-list">
-            <li className="completed">
-              <div className="task-title">
-                <i className="bx bx-group"></i>
-                <p>Đã thêm lớp học mới</p>
-              </div>
-              <span className="task-time">30 phút trước</span>
-            </li>
-            <li className="not-completed">
-              <div className="task-title">
-                <i className="bx bx-calendar"></i>
-                <p>Đã tạo lịch thi mới</p>
-              </div>
-              <span className="task-time">2 giờ trước</span>
-            </li>
-            <li className="completed">
-              <div className="task-title">
-                <i className="bx bx-bar-chart-alt-2"></i>
-                <p>Đã đổi thời khóa biểu</p>
-              </div>
-              <span className="task-time">1 ngày trước</span>
-            </li>
-          </ul>
+      {/* Recent Reports Section */}
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm">
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 m-0">Báo cáo gần đây</h3>
         </div>
+        <ul className="space-y-4">
+          <li className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/30 rounded-lg">
+            <div className="flex items-center gap-3">
+              <i className="bx bx-group text-green-600 text-xl"></i>
+              <p className="text-gray-800 dark:text-gray-200 m-0">Đã thêm lớp học mới</p>
+            </div>
+            <span className="text-sm text-gray-600 dark:text-gray-400">30 phút trước</span>
+          </li>
+          <li className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <div className="flex items-center gap-3">
+              <i className="bx bx-calendar text-gray-600 text-xl"></i>
+              <p className="text-gray-800 dark:text-gray-200 m-0">Đã tạo lịch thi mới</p>
+            </div>
+            <span className="text-sm text-gray-600 dark:text-gray-400">2 giờ trước</span>
+          </li>
+          <li className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/30 rounded-lg">
+            <div className="flex items-center gap-3">
+              <i className="bx bx-bar-chart-alt-2 text-green-600 text-xl"></i>
+              <p className="text-gray-800 dark:text-gray-200 m-0">Đã đổi thời khóa biểu</p>
+            </div>
+            <span className="text-sm text-gray-600 dark:text-gray-400">1 ngày trước</span>
+          </li>
+        </ul>
       </div>
 
-      {/* Modal chọn khối */}
+      {/* Modal */}
       {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3 className="modal-title">Chọn khối để xem chi tiết</h3>
-            <div className="grade-selector">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full max-h-[80vh] overflow-y-auto">
+            <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Chọn khối để xem chi tiết</h3>
+            
+            {/* Grade Selector */}
+            <div className="flex gap-2 mb-4">
               {mockGrades.map((grade) => (
                 <button
                   key={grade.grade}
-                  className={`grade-btn ${
-                    selectedGrade === grade.grade ? 'active' : ''
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    selectedGrade === grade.grade
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                   onClick={() => setSelectedGrade(grade.grade)}
                 >
@@ -382,29 +404,34 @@ export default function SchoolAdminDashboard() {
                 </button>
               ))}
             </div>
+            
             {selectedGrade && (
-              <div className="grade-details">
+              <div className="space-y-4">
                 {(() => {
                   const info = mockGrades.find(g => g.grade === selectedGrade);
                   const classesInGrade = classList.filter(cls => cls.grade === selectedGrade);
                   return (
                     <>
-                      <p className="grade-info-title">Thông tin khối {info.grade}</p>
-                      <div className="grade-stats">
-                        <div>• Số lớp: <span className="stat-value">{info.totalClasses}</span></div>
-                        <div>• Tổng học sinh: <span className="stat-value">{info.totalStudents}</span></div>
-                        <div>• Điểm trung bình: <span className="stat-value score">{info.averageScore}</span></div>
+                      <p className="font-semibold text-gray-800 dark:text-gray-200">Thông tin khối {info.grade}</p>
+                      <div className="space-y-2 text-sm">
+                        <div className="text-gray-600 dark:text-gray-400">• Số lớp: <span className="font-semibold text-gray-800 dark:text-gray-200">{info.totalClasses}</span></div>
+                        <div className="text-gray-600 dark:text-gray-400">• Tổng học sinh: <span className="font-semibold text-gray-800 dark:text-gray-200">{info.totalStudents}</span></div>
+                        <div className="text-gray-600 dark:text-gray-400">• Điểm trung bình: <span className="font-semibold text-blue-600">{info.averageScore}</span></div>
                       </div>
-                      <p className="class-list-title">Danh sách lớp:</p>
-                      <div className="class-list-container">
+                      <p className="font-semibold text-gray-800 dark:text-gray-200">Danh sách lớp:</p>
+                      <div className="max-h-40 overflow-y-auto space-y-2">
                         {classesInGrade.length === 0 && (
-                          <div className="no-classes">Không có lớp nào thuộc khối này.</div>
+                          <div className="text-center py-4 text-gray-500 dark:text-gray-400">Không có lớp nào thuộc khối này.</div>
                         )}
                         {classesInGrade.map(cls => (
-                          <div key={cls.id} className="class-item">
-                            <span className="class-name">{cls.name}</span>
-                            <span className="class-students">Sĩ số: <span className="value">{cls.students}</span></span>
-                            <span className="class-score">Điểm TB: <span className="value">{cls.avgScore}</span></span>
+                          <div key={cls.id} className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <div className="font-medium text-gray-800 dark:text-gray-200 mb-1">{cls.name}</div>
+                            <div className="text-sm text-gray-600 dark:text-gray-400">
+                              Sĩ số: <span className="font-medium text-gray-800 dark:text-gray-200">{cls.students}</span>
+                            </div>
+                            <div className="text-sm text-gray-600 dark:text-gray-400">
+                              Điểm TB: <span className="font-medium text-blue-600">{cls.avgScore}</span>
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -413,9 +440,11 @@ export default function SchoolAdminDashboard() {
                 })()}
               </div>
             )}
-            <div className="modal-actions">
+            
+            {/* Modal Actions */}
+            <div className="mt-6">
               <button
-                className="close-btn"
+                className="w-full p-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-medium"
                 onClick={() => {
                   setShowModal(false);
                   setSelectedGrade(null);
